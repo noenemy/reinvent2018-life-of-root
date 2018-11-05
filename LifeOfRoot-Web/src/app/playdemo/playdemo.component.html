@@ -30,9 +30,28 @@
 
 </div>
 
-<div class="snapshot" *ngIf="webcamImage">
+<!-- <div class="snapshot" *ngIf="webcamImage">
   <h2>Nice one!</h2>
   <img [src]="webcamImage.imageAsDataUrl"/>
+</div> -->
+
+<div class="col-9" *ngIf="labels">
+  <div class="container">
+    <table class="table">
+      <tr class="thead-light">
+        <th>Ranking</th>
+        <th></th>            
+        <th>Name</th>
+        <th></th>
+        <th>Total Score</th>
+        <th>Grade</th>
+      </tr>
+      <tr *ngFor="let label of labels">
+        <td>{{ label.name }}</td>
+        <td>{{ label.confidence }}</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
 <h4 *ngIf="errors.length > 0">Messages:</h4>

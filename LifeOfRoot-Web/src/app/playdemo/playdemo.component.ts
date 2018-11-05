@@ -15,6 +15,7 @@ export class PlaydemoComponent implements OnInit {
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
   public deviceId: string;
+  public labels: any;
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
     // height: {ideal: 576}
@@ -90,9 +91,10 @@ export class PlaydemoComponent implements OnInit {
       base64Image: this.webcamImage.imageAsBase64
     };
 
-    this.http.post('http://localhost:5000/api/newtest', body, { headers })
+    this.http.post('http://localhost:5000/api/stagelogs/labeltest', body, { headers })
         .subscribe(response => {
           alert('Successfully uploaded!');
+          this.labels = response;
       }, error => {
         alert(error);
       });

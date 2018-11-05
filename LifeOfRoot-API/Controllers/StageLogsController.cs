@@ -139,13 +139,14 @@ namespace GotTalent_API.Controllers
         {
         }       
 
-        // POST api/newtest
-        [HttpPost("/newtest")]
+        // POST apistagelogs/labeltest
+        [HttpPost("labeltest")]
         public async Task<IActionResult> PostNewTest([FromBody] GameStagePostImageDTO dto)
         {
             Console.WriteLine("PostNewTest entered.");
 
             string bucketName = "reinvent-gottalent";
+            List<Label> labels = null;
 
             // Retrieving image data
             // ex: game/10/Happiness.jpg
@@ -161,7 +162,7 @@ namespace GotTalent_API.Controllers
             using (MemoryStream ms = new MemoryStream(imageByteArray))
             {
                 // call Rekonition API
-                FaceDetail faceDetail = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms);   
+                labels = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms);   
 
                 // Crop image to get face only
                 // System.Drawing.Image originalImage = System.Drawing.Image.FromStream(ms);
@@ -201,7 +202,7 @@ namespace GotTalent_API.Controllers
             // string signedURL = S3Util.GetPresignedURL(this.S3Client, bucketName, keyName);
             // newStageLog.file_loc = signedURL;
 
-            return Ok(newStageLog);            
+            return Ok(labels);            
         }
  
     }

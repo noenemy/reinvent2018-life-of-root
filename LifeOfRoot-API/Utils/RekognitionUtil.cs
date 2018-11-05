@@ -113,9 +113,9 @@ namespace GotTalent_API.Utils
             }
         }
 
-        public async static Task<FaceDetail> GetObjectDetailFromStream(IAmazonRekognition rekognitionClient, MemoryStream stream)
+        public async static Task<List<Label>> GetObjectDetailFromStream(IAmazonRekognition rekognitionClient, MemoryStream stream)
         {
-            FaceDetail result = null;
+            List<Label> result = null;
             DetectLabelsRequest detectLabelsRequest = new DetectLabelsRequest()
             {
                 Image = new Image {
@@ -130,7 +130,9 @@ namespace GotTalent_API.Utils
                 Task<DetectLabelsResponse> detectTask = rekognitionClient.DetectLabelsAsync(detectLabelsRequest);
                 DetectLabelsResponse detectLabelsResponse = await detectTask;
 
-               PrintObjectDetails(detectLabelsResponse.Labels);
+                result = detectLabelsResponse.Labels;
+                PrintObjectDetails(result);
+               
 
                 // if (detectFacesResponse.FaceDetails.Count > 0)
                 //     result = detectFacesResponse.FaceDetails[0]; // take the 1st face only
