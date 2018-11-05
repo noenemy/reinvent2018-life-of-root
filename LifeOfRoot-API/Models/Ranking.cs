@@ -8,10 +8,8 @@ namespace GotTalent_API.Models
         public int total_rank { get; set; }
         public int game_id { get; set; }
         public string name { get; set; }
-        public string gender { get; set; }
-        public int age { get; set; }
-        public double total_score { get; set; }
-        public string grade { get; set; }
-        public string photoURL { get; set; }
+        public int total_score { get; set; }
+        public int total_found_objects { get; set; }
+        public int total_playtime { get; set; }
     }
 }
