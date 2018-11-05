@@ -94,7 +94,6 @@ namespace GotTalent_API.Controllers
 
             Game game = await _context.Game.Where(x => x.game_id == game_id).FirstOrDefaultAsync();
             game.end_date = DateTime.Now;
-            game.share_yn = "Y";
 
             var value = _context.GameResult.Add(newGameResult);
             await _context.SaveChangesAsync();

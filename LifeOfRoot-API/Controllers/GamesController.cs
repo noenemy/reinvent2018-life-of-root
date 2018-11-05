@@ -43,7 +43,6 @@ namespace GotTalent_API.Controllers
         {
             Game newGame = new Game{
                 name = game.userName,
-                share_yn = "N",
                 start_date = DateTime.Now
             };
 
@@ -60,7 +59,6 @@ namespace GotTalent_API.Controllers
             Game game = await _context.Game.FirstOrDefaultAsync(x => x.game_id == game_id);
             if (game != null)
             {
-                game.share_yn = shareYN;
                 game.end_date = DateTime.Now;
             }
 

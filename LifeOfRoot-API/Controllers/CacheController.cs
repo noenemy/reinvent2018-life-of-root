@@ -28,7 +28,7 @@ namespace GotTalent_API.Controllers
         {
             int gameResultCount = 0;
 
-            var games = await _context.Game.Where(x => x.share_yn == "Y").ToListAsync();
+            var games = await _context.Game.ToListAsync();
             foreach (Game game in games)
             {
                 var gameResults = await _context.GameResult.Where(x => x.game_id == game.game_id).ToListAsync();
