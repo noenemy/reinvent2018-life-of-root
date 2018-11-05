@@ -43,9 +43,6 @@ namespace GotTalent_API.Controllers
 
                 var gameResult = await _context.GameResult.FirstOrDefaultAsync(x => x.game_id == item.game_id);
                 ranking.total_score = gameResult.total_score;
-                ranking.gender = gameResult.gender_result;
-                ranking.age = gameResult.age_result;
-                ranking.grade = gameResult.grade_result;
 
                 var stageLog = await _context.StageLog.FirstOrDefaultAsync(x => x.game_id == item.game_id);
                 //ranking.photoURL = S3Util.GetPresignedURL(this.S3Client, bucketName, stageLog.file_loc);

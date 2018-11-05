@@ -48,7 +48,7 @@ namespace GotTalent_API.Controllers
             string bucketName = "reinvent-gottalent";
 
             var stageLogs = await _context.StageLog.Where(x => x.game_id == game_id).ToListAsync();
-            double totalScore = 0.0f;
+            int totalScore = 0;
             string genderResult = "";
             string gradeResult = "";
             List<string> signedURLs = new List<string>();
@@ -86,10 +86,8 @@ namespace GotTalent_API.Controllers
                 result_page_url = resultPageUrl,
                 total_score = totalScore,
                 total_rank = 0,
-                cast_result = castResult.cast_id,
-                grade_result = gradeResult,
-                gender_result = genderResult,
-                age_result = ageResult 
+                total_found_objects = 12,
+                total_playtime = 120
             };
 
             Game game = await _context.Game.Where(x => x.game_id == game_id).FirstOrDefaultAsync();
