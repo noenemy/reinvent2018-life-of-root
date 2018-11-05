@@ -18,14 +18,14 @@ CREATE TABLE tb_game
 CREATE TABLE tb_stage_log
 (
   game_id INT NOT NULL,
-  action_type VARCHAR(100) NOT NULL,
+  stage_id INT NOT NULL,
   objects_score INT,
   time_score INT,
   total_score INT,
   completed_yn CHAR(1) NOT NULL,
   start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   end_date TIMESTAMP,
-  PRIMARY KEY(game_id,action_type),
+  PRIMARY KEY(game_id,stage_id),
   FOREIGN KEY(game_id) 
     REFERENCES tb_game(game_id)
     ON DELETE CASCADE
