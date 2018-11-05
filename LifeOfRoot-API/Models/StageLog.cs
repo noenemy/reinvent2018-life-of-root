@@ -8,11 +8,12 @@ namespace GotTalent_API.Models
     public class StageLog
     {
         public int game_id { get; set; }
-        public string action_type { get; set; }
-        public double score { get; set; }
-        public string file_loc { get; set; }
-        public int age { get; set; }
-        public string gender { get; set; }
-        public DateTime log_date { get; set; } 
+        public int stage_id { get; set; }
+        public int objects_score { get; set; }
+        public int time_score { get; set; }
+        public int total_score { get; set; }
+        public string completed_yn { get; set; } // Y/N
+        public DateTime start_date { get; set; } 
+        public DateTime end_date { get; set; } 
     }
 }

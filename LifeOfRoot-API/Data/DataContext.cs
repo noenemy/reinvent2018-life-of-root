@@ -17,7 +17,7 @@ namespace GotTalent_API.Data
         {
             // To support composite key for StageLog table
             modelBuilder.Entity<StageLog>()
-                .HasKey(c => new {c.game_id, c.action_type});
+                .HasKey(c => new {c.game_id, c.stage_id});
         }
     }
 }

@@ -53,19 +53,19 @@ namespace GotTalent_API.Controllers
             string gradeResult = "";
             List<string> signedURLs = new List<string>();
             int ageResult = 0;
-            foreach (var stageLog in stageLogs)
-            {
-                if (stageLog.action_type == "Profile")
-                {
-                    genderResult = stageLog.gender;
-                    ageResult = stageLog.age;
-                }
-                else
-                {
-                    totalScore += stageLog.score;
-                    signedURLs.Add(S3Util.GetPresignedURL(this.S3Client, bucketName, stageLog.file_loc));
-                }
-            }
+            // foreach (var stageLog in stageLogs)
+            // {
+            //     if (stageLog.action_type == "Profile")
+            //     {
+            //         genderResult = stageLog.gender;
+            //         ageResult = stageLog.age;
+            //     }
+            //     else
+            //     {
+            //         totalScore += stageLog.score;
+            //         signedURLs.Add(S3Util.GetPresignedURL(this.S3Client, bucketName, stageLog.file_loc));
+            //     }
+            // }
 
             // TODO : need to use Cache service for judgement
             if (totalScore < 160)

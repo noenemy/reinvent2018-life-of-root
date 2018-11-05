@@ -58,8 +58,8 @@ namespace GotTalent_API.Controllers
 
             // Retrieving image data
             // ex: game/10/Happiness.jpg
-            string keyName = string.Format("game/{0}/{1}.jpg", dto.gameId, dto.actionType);
-            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.actionType);
+            string keyName = string.Format("game/{0}/{1}.jpg", dto.gameId, dto.stageId);
+            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.stageId);
             byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
             if (imageByteArray.Length == 0)
                 return BadRequest("Image length is 0.");
@@ -82,11 +82,11 @@ namespace GotTalent_API.Controllers
                 await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, croppedms));
 
                 // Get a specific emotion score
-                double emotionScore = 0.0f;
-                if (dto.actionType != "Profile")
-                {
-                    emotionScore = RekognitionUtil.GetEmotionScore(faceDetail.Emotions, dto.actionType);
-                }
+                // double emotionScore = 0.0f;
+                // if (dto.actionType != "Profile")
+                // {
+                //     emotionScore = RekognitionUtil.GetEmotionScore(faceDetail.Emotions, dto.actionType);
+                // }
 
                 int evaluatedAge = (faceDetail.AgeRange.High + faceDetail.AgeRange.Low) / 2;
                 string evaluatedGender = faceDetail.Gender.Value;
@@ -94,12 +94,12 @@ namespace GotTalent_API.Controllers
                 // Database update
                 newStageLog = new StageLog{
                     game_id = dto.gameId,
-                    action_type = dto.actionType,
-                    score = emotionScore,
-                    file_loc = keyName,
-                    age = evaluatedAge,
-                    gender = evaluatedGender,
-                    log_date = DateTime.Now 
+                    stage_id = dto.stageId,
+                    objects_score = 100,
+                    time_score = 100,
+                    total_score = 200,
+                    completed_yn = "Y",
+                    end_date = DateTime.Now 
                 };
 
                 var value = _context.StageLog.Add(newStageLog);
@@ -107,8 +107,8 @@ namespace GotTalent_API.Controllers
             }
 
             // Send response
-            string signedURL = S3Util.GetPresignedURL(this.S3Client, bucketName, keyName);
-            newStageLog.file_loc = signedURL;
+            //string signedURL = S3Util.GetPresignedURL(this.S3Client, bucketName, keyName);
+            //newStageLog.file_loc = signedURL;
 
             return Ok(newStageLog);            
         }
@@ -152,7 +152,7 @@ namespace GotTalent_API.Controllers
             // ex: game/10/Happiness.jpg
             // string keyName = string.Format("game/{0}/{1}.jpg", dto.gameId, dto.actionType);
             string keyName = string.Format("game/0/drawing.jpg");
-            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.actionType);
+            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.stageId);
             byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
             if (imageByteArray.Length == 0)
                 return BadRequest("Image length is 0.");
