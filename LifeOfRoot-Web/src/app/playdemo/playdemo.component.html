@@ -1,57 +1,45 @@
 <br>
-<h1 class="text-secondary text-center">Play demo!</h1>
+<h1 class="text-secondary text-center">Test mode</h1>
 <br>
 
-<p class="text-center">
-    This demo is powered by 
-    <a href="https://www.npmjs.com/package/ngx-webcam">Ngx-webcam</a>.
-    <a href="https://github.com/basst314/ngx-webcam">GitHub</a>
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-8">
 
-<div class="text-center">
-    <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
-            [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
-            [videoOptions]="videoOptions"
-            (cameraSwitched)="cameraWasSwitched($event)"
-            (initError)="handleInitError($event)"
-    ></webcam>
+      <div class="text-center">
+          <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                  [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                  [videoOptions]="videoOptions"
+                  (cameraSwitched)="cameraWasSwitched($event)"
+                  (initError)="handleInitError($event)"
+          ></webcam>
 
-    <br/>
-    <button class="btn btn-primary mr-2" (click)="triggerSnapshot();">Take A Snapshot</button>
-    <button class="btn btn-secondary" (click)="toggleWebcam();">Toggle Webcam</button>
-    <br/>
-    <!--
-    <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button>
-    <input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
-    <br/>
-    DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
-    <button (click)="showNextWebcam(deviceId);">Activate</button>
-    -->
+          <br/>
+          <button class="btn btn-primary mr-2" (click)="triggerSnapshot();">Take A Snapshot</button>
+          <button class="btn btn-secondary" (click)="toggleWebcam();">Toggle Webcam</button>
+          <br/>
 
-</div>
+      </div>
+    </div>
 
-<!-- <div class="snapshot" *ngIf="webcamImage">
-  <h2>Nice one!</h2>
-  <img [src]="webcamImage.imageAsDataUrl"/>
-</div> -->
-
-<div class="col-9" *ngIf="labels">
-  <div class="container">
-    <table class="table">
-      <tr class="thead-light">
-        <th>Ranking</th>
-        <th></th>            
-        <th>Name</th>
-        <th></th>
-        <th>Total Score</th>
-        <th>Grade</th>
-      </tr>
-      <tr *ngFor="let label of labels">
-        <td>{{ label.name }}</td>
-        <td>{{ label.confidence }}</td>
-      </tr>
-    </table>
-  </div>
+    <div class="col-4" *ngIf="labels">
+      <div>
+        <h5>picture_id : {{ picture.picture_id }}</h5>
+        <h5>file_loc : {{ picture.file_loc }}</h5>
+      </div>
+      <div class="container">
+        <table class="table">
+          <tr class="thead-light">
+            <th>Label</th>  
+            <th>Confidence</th>
+          </tr>
+          <tr *ngFor="let label of labels">
+            <td>{{ label.name }}</td>
+            <td>{{ label.confidence }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
 </div>
 
 <h4 *ngIf="errors.length > 0">Messages:</h4>

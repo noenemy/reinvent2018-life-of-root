@@ -15,6 +15,7 @@ export class PlaydemoComponent implements OnInit {
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
   public deviceId: string;
+  public picture: any;
   public labels: any;
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
@@ -78,25 +79,31 @@ export class PlaydemoComponent implements OnInit {
   }
 
   public postImage() {
-    console.log(this.webcamImage.imageAsBase64);
-
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
 
-    // TODO : temporarily hardcoded for development
     const body = {
-      gameId: 3,
-      actionType: 'Happiness',
       base64Image: this.webcamImage.imageAsBase64
     };
 
-    this.http.post('http://localhost:5000/api/stagelogs/labeltest', body, { headers })
+    this.http.post('http://localhost:5000/api/testpictures', body, { headers })
         .subscribe(response => {
           alert('Successfully uploaded!');
-          this.labels = response;
+          this.picture = response.newTestPicture;
+          this.labels = response.labels;
       }, error => {
         alert(error);
       });
+  }
+
+  public useImage(picture_id: number, use: boolean)
+  {
+      this.http.post('http://localhost:5000/api/testpictures', body, { headers })
+      .subscribe(response => {
+        alert('Successfully uploaded!');
+    }, error => {
+      alert(error);
+    });
   }
 }

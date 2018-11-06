@@ -131,11 +131,7 @@ namespace GotTalent_API.Utils
                 DetectLabelsResponse detectLabelsResponse = await detectTask;
 
                 result = detectLabelsResponse.Labels;
-                PrintObjectDetails(result);
-               
-
-                // if (detectFacesResponse.FaceDetails.Count > 0)
-                //     result = detectFacesResponse.FaceDetails[0]; // take the 1st face only
+                //PrintObjectDetails(result);
             }
             catch (AmazonRekognitionException rekognitionException)
             {
