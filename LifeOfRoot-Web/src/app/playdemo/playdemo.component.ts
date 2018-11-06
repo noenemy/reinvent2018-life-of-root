@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers, Response, RequestOptions } from '@angular/http';
+import { AlertifyService } from '../_services/alertify.service';
 
 @Component({
   selector: 'app-playdemo',
@@ -23,7 +24,8 @@ export class PlaydemoComponent implements OnInit {
   };
   public errors: WebcamInitError[] = [];
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,
+    private alertify: AlertifyService) { }
 
   // latest snapshot
   public webcamImage: WebcamImage = null;
@@ -89,21 +91,11 @@ export class PlaydemoComponent implements OnInit {
 
     this.http.post('http://localhost:5000/api/testpictures', body, { headers })
         .subscribe(response => {
-          alert('Successfully uploaded!');
+          this.alertify.success('Successfully uploaded!');
           this.picture = response.newTestPicture;
           this.labels = response.labels;
       }, error => {
-        alert(error);
+        this.alertify.error('Something went wrong!');
       });
-  }
-
-  public useImage(picture_id: number, use: boolean)
-  {
-      this.http.post('http://localhost:5000/api/testpictures', body, { headers })
-      .subscribe(response => {
-        alert('Successfully uploaded!');
-    }, error => {
-      alert(error);
-    });
   }
 }
