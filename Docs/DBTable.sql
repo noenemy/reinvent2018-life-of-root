@@ -1,10 +1,33 @@
 /*
   - LifeOfRoot game용으로 새로 만들어봤습니다. 리뷰 필요합니다!!
+     => 리뷰 완료 (jiskim@)
   - 모든 테이블/컬럼명은 소문자로 표기
   - end_date를 제외한 나머지 날짜 컬럼은 default 값으로 현재 시간 기록
 */
 
 USE lifeofroot2018;
+
+-- 카드 테스트용 테이블 2개 추가
+-- 인식 테스트 결과 코드 테이블
+CREATE TABLE tb_test_picture
+(
+  picture_id INT NOT NULL AUTO_INCREMENT,
+  file_loc VARCHAR(2083) DEFAULT NULL, 
+  use_yn VARCHAR(2) DEFAULT 'Y',
+  PRIMARY KEY(picture_id)
+) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- 인식 테스트 결과 코드 테이블(상세)
+CREATE TABLE tb_test_picture_labels
+(
+  picture_id INT NOT NULL,
+  label_name VARCHAR(100),
+  confidence DOUBLE,
+  FOREIGN KEY(picture_id)
+    REFERENCES tb_test_picture(picture_id)
+    ON DELETE CASCADE
+    ON UPDATE RESTRICT
+)DEFAULT CHARSET=utf8;
 
 CREATE TABLE tb_game
 (
