@@ -12,7 +12,6 @@ import { AboutusComponent } from './aboutus/aboutus.component';
 import { WebcamModule } from 'ngx-webcam';
 import { GameService } from './_services/game.service';
 import { StagelogService } from './_services/stagelog.service';
-import { CastService } from './_services/cast.service';
 import { RankingService } from './_services/ranking.service';
 import { GameResultService } from './_services/gameresult.service';
 import { GameComponent } from './game/game.component';
@@ -53,7 +52,6 @@ import { PlaydemoComponent } from './playdemo/playdemo.component';
    providers: [
       GameService,
       StagelogService,
-      CastService,
       GameResultService,
       RankingService,
       AlertifyService

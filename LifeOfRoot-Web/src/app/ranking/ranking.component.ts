@@ -4,8 +4,6 @@ import { GameService } from '../_services/game.service';
 import { Game } from '../_models/game';
 import { StagelogService } from '../_services/stagelog.service';
 import { StageLog } from '../_models/stagelog';
-import { CastService } from '../_services/cast.service';
-import { Cast } from '../_models/cast';
 import { Ranking } from '../_models/ranking';
 import { RankingService } from '../_services/ranking.service';
 
@@ -21,7 +19,6 @@ export class RankingComponent implements OnInit {
   constructor(private http: HttpClient, 
     private gameService: GameService,
     private stageLogService: StagelogService,
-    private castService: CastService,
     private rankingService: RankingService) { }
 
   ngOnInit() {

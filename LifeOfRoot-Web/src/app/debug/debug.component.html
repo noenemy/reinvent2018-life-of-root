@@ -38,24 +38,6 @@
 </div>
 
 <br>
-<h1 class="text-secondary text-center">tb_cast</h1>
-<br>
-<div class="container">
-  <table class="table table-striped table-success">
-    <tr>
-        <th *ngFor="let col of castColumns">
-          {{col}}
-        </th>
-      </tr>    
-    <tr *ngFor="let cast of castList">
-      <td *ngFor="let col of castColumns">
-        {{cast[col]}}
-      </td>
-    </tr>
-  </table>
-</div>
-
-<br>
 <h1 class="text-secondary text-center">tb_stage_log</h1>
 <br>
 <div class="container">

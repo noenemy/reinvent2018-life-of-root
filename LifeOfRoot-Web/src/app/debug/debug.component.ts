@@ -4,8 +4,6 @@ import { GameService } from '../_services/game.service';
 import { Game } from '../_models/game';
 import { StagelogService } from '../_services/stagelog.service';
 import { StageLog } from '../_models/stagelog';
-import { CastService } from '../_services/cast.service';
-import { Cast } from '../_models/cast';
 import { GameResultService } from '../_services/gameresult.service';
 import { GameResult } from '../_models/gameresult';
 
@@ -21,13 +19,11 @@ export class DebugComponent implements OnInit {
   stageLogColumns: string[];
   gameResults: GameResult[];
   games: Game[];
-  castList: Cast[];
   stageLogs: StageLog[];
 
   constructor(private http: HttpClient, 
     private gameService: GameService,
     private stageLogService: StagelogService,
-    private castService: CastService,
     private gameResultService: GameResultService) { }
 
   ngOnInit() {
@@ -37,7 +33,6 @@ export class DebugComponent implements OnInit {
     this.stageLogColumns = this.getStageLogColumns();
     this.getGameResults();
     this.getGames();
-    this.getCastList();
     this.getStageLogs();    
   }
   getGameResults() {
@@ -51,14 +46,6 @@ export class DebugComponent implements OnInit {
   getGames() {
     this.gameService.getGames().subscribe((games: Game[]) => {
       this.games = games;
-    }, error => {
-      console.log(error);
-    });
-  }
-
-  getCastList() {
-    this.castService.getCastList().subscribe((castList: Cast[]) => {
-      this.castList = castList;
     }, error => {
       console.log(error);
     });

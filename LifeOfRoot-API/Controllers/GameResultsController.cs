@@ -76,8 +76,8 @@ namespace GotTalent_API.Controllers
                 gradeResult = "Leading";
             
             // casting randomly
-            int randomRecord = new Random().Next() % _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Count();;
-            var castResult = _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Skip(randomRecord).Take(1).First();
+            // int randomRecord = new Random().Next() % _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Count();;
+            //var castResult = _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Skip(randomRecord).Take(1).First();
             string resultPageUrl = "TBD";
 
             // Database update
@@ -99,7 +99,8 @@ namespace GotTalent_API.Controllers
             RedisUtil.AddGameResultToRedis(newGameResult);
             newGameResult.total_rank = RedisUtil.GetGameRanking(newGameResult.game_id) + 1;
 
-            return Ok(new {newGameResult, castResult.actor, castResult.title, signedURLs});
+            //return Ok(new {newGameResult, castResult.actor, castResult.title, signedURLs});
+            return Ok(new {newGameResult, signedURLs});
         }
 
 
