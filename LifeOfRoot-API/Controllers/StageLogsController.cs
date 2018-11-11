@@ -50,69 +50,71 @@ namespace GotTalent_API.Controllers
 
         // POST api/stagelogs
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] GameStagePostImageDTO dto)
+        public async Task<IActionResult> Post([FromBody] StagePostImageDTO dto)
         {
-            Console.WriteLine("PostImage entered.");
+            Console.WriteLine("stagelogs POST entered.");
 
-            string bucketName = "reinvent-gottalent";
+            // Getting random stage objects for the stage
+            int stageTime = 30; // 30 seconds
+            int stageObjectCount = GetStageobjectCount(dto.stageId);
 
-            // Retrieving image data
-            // ex: game/10/Happiness.jpg
-            string keyName = string.Format("game/{0}/{1}.jpg", dto.gameId, dto.stageId);
-            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.stageId);
-            byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
-            if (imageByteArray.Length == 0)
-                return BadRequest("Image length is 0.");
+            List<string> stageObjectList = new List<string>();
 
-            StageLog newStageLog = null;
+            // TODO : temporary stage objects list
+            stageObjectList.Add("Tiger");
+            stageObjectList.Add("Fish");
+            stageObjectList.Add("Piano");
 
-            using (MemoryStream ms = new MemoryStream(imageByteArray))
-            {
-                // call Rekonition API
-                FaceDetail faceDetail = await RekognitionUtil.GetFaceDetailFromStream(this.RekognitionClient, ms);   
-
-                // Crop image to get face only
-                System.Drawing.Image originalImage = System.Drawing.Image.FromStream(ms);
-                System.Drawing.Image croppedImage = GetCroppedFaceImage(originalImage, faceDetail.BoundingBox);
-                MemoryStream croppedms = new MemoryStream();
-                croppedImage.Save(croppedms, ImageFormat.Jpeg);
-
-                // Upload image to S3 bucket
-                //await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, ms));
-                await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, croppedms));
-
-                // Get a specific emotion score
-                // double emotionScore = 0.0f;
-                // if (dto.actionType != "Profile")
-                // {
-                //     emotionScore = RekognitionUtil.GetEmotionScore(faceDetail.Emotions, dto.actionType);
-                // }
-
-                int evaluatedAge = (faceDetail.AgeRange.High + faceDetail.AgeRange.Low) / 2;
-                string evaluatedGender = faceDetail.Gender.Value;
-
-                // Database update
-                newStageLog = new StageLog{
+            // Add a stage log record
+            StageLog newStageLog = new StageLog{
                     game_id = dto.gameId,
                     stage_id = dto.stageId,
-                    objects_score = 100,
-                    time_score = 100,
-                    total_score = 200,
-                    completed_yn = "Y",
-                    end_date = DateTime.Now 
+                    completed_yn = "N",
+                    start_date = DateTime.Now 
                 };
+            var value = _context.StageLog.Add(newStageLog);
+            await _context.SaveChangesAsync();  
 
-                var value = _context.StageLog.Add(newStageLog);
+            // Add stage objects
+            foreach (string stageObject in stageObjectList)
+            {
+                StageObject newStageObject = new StageObject{
+                    game_id = dto.gameId,
+                    stage_id = dto.stageId,
+                    object_score = 10,
+                    found_yn = "N",
+                    log_date = DateTime.Now
+                };
+                _context.StageObject.Add(newStageObject);
                 await _context.SaveChangesAsync();  
             }
 
-            // Send response
-            //string signedURL = S3Util.GetPresignedURL(this.S3Client, bucketName, keyName);
-            //newStageLog.file_loc = signedURL;
-
-            return Ok(newStageLog);            
+            return Ok(new {newStageLog, stageObjectList});            
         }
 
+        private int GetStageobjectCount(int stageId)
+        {
+            int stageObjectCount = 0;
+            switch (stageId)
+            {
+                case 1:
+                    stageObjectCount = 3;
+                    break;
+                case 2:
+                    stageObjectCount = 5;
+                    break;
+                case 3:
+                    stageObjectCount = 10;
+                    break;
+                case 4:
+                    stageObjectCount = 15;
+                    break;
+                default:
+                    stageObjectCount = 0;
+                    break;
+            }
+            return stageObjectCount;
+        }
         public static System.Drawing.Image GetCroppedFaceImage(System.Drawing.Image originalImage, BoundingBox box)
         {
             int left = Convert.ToInt32(originalImage.Width * box.Left);
@@ -138,72 +140,5 @@ namespace GotTalent_API.Controllers
         public void Delete(int id)
         {
         }       
-
-        // POST apistagelogs/labeltest
-        [HttpPost("labeltest")]
-        public async Task<IActionResult> PostNewTest([FromBody] GameStagePostImageDTO dto)
-        {
-            Console.WriteLine("PostNewTest entered.");
-
-            string bucketName = "reinvent-gottalent";
-            List<Label> labels = null;
-
-            // Retrieving image data
-            // ex: game/10/Happiness.jpg
-            // string keyName = string.Format("game/{0}/{1}.jpg", dto.gameId, dto.actionType);
-            string keyName = string.Format("game/0/drawing.jpg");
-            string croppedKeyName = string.Format("game/{0}/{1}_cropped.jpg", dto.gameId, dto.stageId);
-            byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
-            if (imageByteArray.Length == 0)
-                return BadRequest("Image length is 0.");
-
-            StageLog newStageLog = null;
-
-            using (MemoryStream ms = new MemoryStream(imageByteArray))
-            {
-                // call Rekonition API
-                labels = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms);   
-
-                // Crop image to get face only
-                // System.Drawing.Image originalImage = System.Drawing.Image.FromStream(ms);
-                // System.Drawing.Image croppedImage = GetCroppedFaceImage(originalImage, faceDetail.BoundingBox);
-                // MemoryStream croppedms = new MemoryStream();
-                // croppedImage.Save(croppedms, ImageFormat.Jpeg);
-
-                // Upload image to S3 bucket
-            //     await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, croppedms));
-
-            //     // Get a specific emotion score
-            //     double emotionScore = 0.0f;
-            //     if (dto.actionType != "Profile")
-            //     {
-            //         emotionScore = RekognitionUtil.GetEmotionScore(faceDetail.Emotions, dto.actionType);
-            //     }
-
-            //     int evaluatedAge = (faceDetail.AgeRange.High + faceDetail.AgeRange.Low) / 2;
-            //     string evaluatedGender = faceDetail.Gender.Value;
-
-            //     // Database update
-            //     newStageLog = new StageLog{
-            //         game_id = dto.gameId,
-            //         action_type = dto.actionType,
-            //         score = emotionScore,
-            //         file_loc = keyName,
-            //         age = evaluatedAge,
-            //         gender = evaluatedGender,
-            //         log_date = DateTime.Now 
-            //     };
-
-            //     var value = _context.StageLog.Add(newStageLog);
-            //     await _context.SaveChangesAsync();  
-            }
-
-            // // Send response
-            // string signedURL = S3Util.GetPresignedURL(this.S3Client, bucketName, keyName);
-            // newStageLog.file_loc = signedURL;
-
-            return Ok(labels);            
-        }
- 
     }
 }

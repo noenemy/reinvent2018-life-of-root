@@ -8,6 +8,7 @@ namespace GotTalent_API.Data
         public DataContext(DbContextOptions<DataContext> options) : base (options) {}
 
         public DbSet<StageLog> StageLog { get; set; }
+        public DbSet<StageObject> StageObject { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<Feedback> Feedback { get; set; }
         public DbSet<GameResult> GameResult { get; set; }
@@ -16,11 +17,13 @@ namespace GotTalent_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // To support composite key for StageLog table
+            // To support composite key
             modelBuilder.Entity<StageLog>()
                 .HasKey(c => new {c.game_id, c.stage_id});
             modelBuilder.Entity<TestPictureLabel>()
                 .HasKey(c => new {c.picture_id, c.label_name});
+            modelBuilder.Entity<StageObject>()
+                .HasKey(c => new {c.game_id, c.stage_id, c.objects_name});    
         }
     }
 }

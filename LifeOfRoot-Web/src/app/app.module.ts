@@ -24,6 +24,7 @@ import { AlertifyService } from './_services/alertify.service';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DebugComponent } from './debug/debug.component';
 import { PlaydemoComponent } from './playdemo/playdemo.component';
+import { StageService } from './_services/stage.service';
 
 @NgModule({
    declarations: [
@@ -51,6 +52,7 @@ import { PlaydemoComponent } from './playdemo/playdemo.component';
    ],
    providers: [
       GameService,
+      StageService,
       StagelogService,
       GameResultService,
       RankingService,

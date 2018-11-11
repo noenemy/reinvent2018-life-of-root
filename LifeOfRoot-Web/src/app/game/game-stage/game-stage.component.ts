@@ -6,6 +6,9 @@ import { Headers, Response, RequestOptions } from '@angular/http';
 import { AlertifyService } from '../../_services/alertify.service';
 import { StagelogService } from '../../_services/stagelog.service';
 import { StageLog } from '../../_models/stagelog';
+import { StageService } from 'src/app/_services/stage.service';
+import { Stageinfo } from 'src/app/_models/stageinfo';
+import { Stagescore } from 'src/app/_models/stagescore';
 
 @Component({
   selector: 'app-game-stage',
@@ -15,6 +18,7 @@ import { StageLog } from '../../_models/stagelog';
 export class GameStageComponent implements OnInit {
   @Input() stage: string;
   @Input() game_id: number;
+  @Input() stage_id: number;
   @Input() action_type: string;
   @Input() message1: string;
   @Input() message2: string;
@@ -36,6 +40,7 @@ export class GameStageComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private stagelogService: StagelogService,
+    private stageService: StageService,
     private alertify: AlertifyService) { }
 
   // latest snapshot
@@ -51,6 +56,9 @@ export class GameStageComponent implements OnInit {
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
+
+    this.stage_id = 1;
+    this.getStageInfo();
   }
 
   gameEnd() {
@@ -96,6 +104,12 @@ export class GameStageComponent implements OnInit {
     return this.nextWebcam.asObservable();
   }
 
+  public getStageInfo() {
+    this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
+      this.alertify.success(stageInfo.stage_objects + ',' + stageInfo.stage_time);
+    })
+  }
+
   public addStageLog() {
 
     this.alertify.message('Now working on it...');
@@ -106,19 +120,16 @@ export class GameStageComponent implements OnInit {
       base64Image: this.webcamImage.imageAsBase64
     };
 
-    this.stagelogService.addStageLog(stageLog).subscribe((stageLogResult: StageLog) => {
+    this.stageService.uploadPicture(stageLog).subscribe((stageScore: Stagescore) => {
 
       this.alertify.success('Successfully uploaded!');
 
-      this.imageSignedURL = stageLogResult.file_loc;
+      if (stageScore.object_name != null)
+        this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
+      else
+        this.your_score = 'not found';
 
-      if (stageLogResult.action_type === 'Profile') {
-        this.your_score = 'age:' + stageLogResult.age + ', gender:' + stageLogResult.gender;
-      } else {
-        this.your_score = stageLogResult.score;
-      }
-
-      this.stageCompleted.emit(this.action_type);
+      // this.stageCompleted.emit(this.action_type);
 
       console.log(this.action_type);
     }, error => {

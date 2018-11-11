@@ -92,8 +92,8 @@ export class PlaydemoComponent implements OnInit {
     this.http.post('http://localhost:5000/api/testpictures', body, { headers })
         .subscribe(response => {
           this.alertify.success('Successfully uploaded!');
-          this.picture = response.newTestPicture;
-          this.labels = response.labels;
+          // this.picture = response.newTestPicture;
+          // this.labels = response.labels;
       }, error => {
         this.alertify.error('Something went wrong!');
       });

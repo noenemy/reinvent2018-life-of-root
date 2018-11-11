@@ -1,9 +1,10 @@
 export interface StageLog {
     game_id: number;
-    action_type: string;
+    stage_id: number;
+    objects_score: number;
+    time_score: number;
+    completed_yn: string;
     score: number;
-    file_loc: string;
-    age: number;
-    gender: string;
+    start_date: Date;
     log_date: Date;
 }
