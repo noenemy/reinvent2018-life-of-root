@@ -114,7 +114,7 @@ namespace GotTalent_API.Controllers
                 await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, ms));
             }
             
-            return Ok(new {newTestPicture, labels});            
+            return Ok(labels);            
         } 
     }
 }
