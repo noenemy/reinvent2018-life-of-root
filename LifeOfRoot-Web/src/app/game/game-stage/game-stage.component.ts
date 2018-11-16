@@ -17,10 +17,9 @@ export class GameStageComponent implements OnInit {
   @Input() stage: string;
   @Input() game_id: number;
   @Input() stage_id: number;
-  @Input() action_type: string;
   @Input() message1: string;
   @Input() message2: string;
-  @Output() stageCompleted = new EventEmitter<string>();
+  @Output() stageCompleted = new EventEmitter<number>();
 
   imageSignedURL: string;
   total_score: number;
@@ -66,7 +65,7 @@ export class GameStageComponent implements OnInit {
 
   gameEnd() {
     console.log('game end!');
-    this.stageCompleted.emit(this.action_type);
+    this.stageCompleted.emit(this.stage_id);
   }
 
   public getStageInfo() {
@@ -85,7 +84,7 @@ export class GameStageComponent implements OnInit {
 
     const stageLog = {
       gameId: this.game_id,
-      actionType: this.action_type,
+      stageId: this.stage_id,
       base64Image: this.webcamImage.imageAsBase64
     };
 
@@ -95,7 +94,7 @@ export class GameStageComponent implements OnInit {
 
       let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
       if (element) {
-        element.style = 'background-color: grey';
+        element.style.backgroundColor = 'grey';
         this.total_score += stageScore.object_score;
 
         this.alertify.success('Great!');
