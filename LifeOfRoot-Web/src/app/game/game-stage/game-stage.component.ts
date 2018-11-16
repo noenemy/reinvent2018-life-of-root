@@ -6,6 +6,7 @@ import { AlertifyService } from '../../_services/alertify.service';
 import { StageService } from 'src/app/_services/stage.service';
 import { Stageinfo } from 'src/app/_models/stageinfo';
 import { Stagescore } from 'src/app/_models/stagescore';
+import { AngularFontAwesomeComponent } from 'angular-font-awesome';
 
 @Component({
   selector: 'app-game-stage',
@@ -23,6 +24,7 @@ export class GameStageComponent implements OnInit {
 
   imageSignedURL: string;
   total_score: number;
+  objects: string[];
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -56,7 +58,6 @@ export class GameStageComponent implements OnInit {
     this.stage_id = 1;
     this.total_score = 0;
     this.getStageInfo();
-    this.runTimer(30);
   }
 
   ngOnDestroy() {
@@ -70,7 +71,11 @@ export class GameStageComponent implements OnInit {
 
   public getStageInfo() {
     this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
-      this.alertify.success(stageInfo.stage_objects + ',' + stageInfo.stage_time);
+      // get stage objects
+      this.objects = stageInfo.stage_objects;
+
+      // start game
+      this.runTimer(stageInfo.stage_time);
     })
   }
 
@@ -88,15 +93,16 @@ export class GameStageComponent implements OnInit {
 
       this.alertify.success('Successfully uploaded!');
 
-      this.total_score += 100;
-      // if (stageScore.object_name != null)
-      //   this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
-      // else
-      //   this.your_score = 'not found';
+      let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
+      if (element) {
+        element.style = 'background-color: grey';
+        this.total_score += stageScore.object_score;
 
-      // this.stageCompleted.emit(this.action_type);
+        this.alertify.success('Great!');
+      } else {
+        this.alertify.warning('Not found!');
+      }
 
-      console.log(this.action_type);
     }, error => {
       this.alertify.error('Hey. something wrong. Try again.');
     });
