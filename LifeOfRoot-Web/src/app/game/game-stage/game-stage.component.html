@@ -1,21 +1,5 @@
-
 <div class="container">
 
-  <!-- 1st row
-  <div class="row">
-    <div class="col-5">
-        <h2>Stage: <span class="badge badge-secondary">{{ stage_id }}</span></h2>
-    </div>
-    <div class="col-2 timer-rounded">
-        <h1 class="display-3">{{ seconds | number }}</h1>      
-    </div>
-    <div class="col-5">
-      <h2>Total Score: <span class="badge badge-secondary">{{ score }}</span></h2>
-    </div>
-  </div> -->
-
-
-  <!-- 2nd row -->
   <div class="row">
     <div class="col-3">
       <img src="../../../assets/images/judge/writing.jpeg">
@@ -30,7 +14,7 @@
       -->
 
      <!-- stage info header  -->
-      <div class="row">
+      <div class="row align-items-center">
         <div class="col-3">
             <h2>Stage: <span class="badge badge-secondary">{{ stage_id }}</span></h2>
         </div>
@@ -39,11 +23,12 @@
         </div>
         <div class="col-1"></div>
         <div class="col-6">
-          <h2>Total Score: <span class="badge badge-secondary">{{ score }}</span></h2>
+          <h2>Total Score: <span class="badge badge-secondary">{{ total_score }}</span></h2>
         </div>
       </div>
 
-      <div class="container">
+
+      <div class="container mt-1">
         <div class="row">
           <!-- left: webcam pane -->
           <div class="col-8">

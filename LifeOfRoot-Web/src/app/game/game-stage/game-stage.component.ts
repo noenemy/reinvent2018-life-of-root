@@ -22,7 +22,7 @@ export class GameStageComponent implements OnInit {
   @Output() stageCompleted = new EventEmitter<string>();
 
   imageSignedURL: string;
-  your_score: any;
+  total_score: number;
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -54,6 +54,7 @@ export class GameStageComponent implements OnInit {
       });
 
     this.stage_id = 1;
+    this.total_score = 0;
     this.getStageInfo();
     this.runTimer(30);
   }
@@ -87,10 +88,11 @@ export class GameStageComponent implements OnInit {
 
       this.alertify.success('Successfully uploaded!');
 
-      if (stageScore.object_name != null)
-        this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
-      else
-        this.your_score = 'not found';
+      this.total_score += 100;
+      // if (stageScore.object_name != null)
+      //   this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
+      // else
+      //   this.your_score = 'not found';
 
       // this.stageCompleted.emit(this.action_type);
 
