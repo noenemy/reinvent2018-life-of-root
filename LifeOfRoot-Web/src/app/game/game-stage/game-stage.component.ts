@@ -55,6 +55,11 @@ export class GameStageComponent implements OnInit {
 
     this.stage_id = 1;
     this.getStageInfo();
+    this.runTimer(30);
+  }
+
+  ngOnDestroy() {
+    this.clearTimer();
   }
 
   gameEnd() {
@@ -96,8 +101,25 @@ export class GameStageComponent implements OnInit {
   }
 
   // Timer handler
+  intervalId = 0;
+  message = '';
+  seconds = 0.0;
 
+  private clearTimer() {
+    clearInterval(this.intervalId);
+  }
 
+  public runTimer(stageTime : number) {
+    this.clearTimer();
+    this.seconds = stageTime;
+    this.intervalId = window.setInterval(() => {
+      this.seconds -= 0.1;
+      if (this.seconds ===0 || this.seconds < 0) {
+        this.clearTimer();
+        this.alertify.warning('Game Over!');
+      }
+    }, 100);
+  }
 
   // Webcam handler
   public triggerSnapshot(): void {
