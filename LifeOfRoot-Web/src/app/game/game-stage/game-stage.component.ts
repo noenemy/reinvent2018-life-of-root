@@ -1,11 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, timer } from 'rxjs';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Headers, Response, RequestOptions } from '@angular/http';
 import { AlertifyService } from '../../_services/alertify.service';
-import { StagelogService } from '../../_services/stagelog.service';
-import { StageLog } from '../../_models/stagelog';
 import { StageService } from 'src/app/_services/stage.service';
 import { Stageinfo } from 'src/app/_models/stageinfo';
 import { Stagescore } from 'src/app/_models/stagescore';
@@ -26,7 +23,7 @@ export class GameStageComponent implements OnInit {
 
   imageSignedURL: string;
   your_score: any;
- 
+
   // toggle webcam on/off
   public showWebcam = true;
   public allowCameraSwitch = true;
@@ -39,7 +36,6 @@ export class GameStageComponent implements OnInit {
   public errors: WebcamInitError[] = [];
 
   constructor(private http: HttpClient,
-    private stagelogService: StagelogService,
     private stageService: StageService,
     private alertify: AlertifyService) { }
 
@@ -66,6 +62,44 @@ export class GameStageComponent implements OnInit {
     this.stageCompleted.emit(this.action_type);
   }
 
+  public getStageInfo() {
+    this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
+      this.alertify.success(stageInfo.stage_objects + ',' + stageInfo.stage_time);
+    })
+  }
+
+  public addStageLog() {
+
+    this.alertify.message('Now working on it...');
+
+    const stageLog = {
+      gameId: this.game_id,
+      actionType: this.action_type,
+      base64Image: this.webcamImage.imageAsBase64
+    };
+
+    this.stageService.uploadPicture(stageLog).subscribe((stageScore: Stagescore) => {
+
+      this.alertify.success('Successfully uploaded!');
+
+      if (stageScore.object_name != null)
+        this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
+      else
+        this.your_score = 'not found';
+
+      // this.stageCompleted.emit(this.action_type);
+
+      console.log(this.action_type);
+    }, error => {
+      this.alertify.error('Hey. something wrong. Try again.');
+    });
+  }
+
+  // Timer handler
+
+
+
+  // Webcam handler
   public triggerSnapshot(): void {
     this.trigger.next();
     this.addStageLog();
@@ -102,39 +136,6 @@ export class GameStageComponent implements OnInit {
 
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
-  }
-
-  public getStageInfo() {
-    this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
-      this.alertify.success(stageInfo.stage_objects + ',' + stageInfo.stage_time);
-    })
-  }
-
-  public addStageLog() {
-
-    this.alertify.message('Now working on it...');
-
-    const stageLog = {
-      gameId: this.game_id,
-      actionType: this.action_type,
-      base64Image: this.webcamImage.imageAsBase64
-    };
-
-    this.stageService.uploadPicture(stageLog).subscribe((stageScore: Stagescore) => {
-
-      this.alertify.success('Successfully uploaded!');
-
-      if (stageScore.object_name != null)
-        this.your_score = 'found ' + stageScore.object_name + ', score: ' + stageScore.object_score;
-      else
-        this.your_score = 'not found';
-
-      // this.stageCompleted.emit(this.action_type);
-
-      console.log(this.action_type);
-    }, error => {
-      this.alertify.error('Hey. something wrong. Try again.');
-    });
   }
 }
 
