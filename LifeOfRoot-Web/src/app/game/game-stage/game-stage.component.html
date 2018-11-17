@@ -4,7 +4,10 @@
   <div class="row align-items-center">
     <div class="col-1"></div>
     <div class="col-3">
-        <h2>Stage: <span class="badge badge-secondary display-4">{{ stage_id }}</span></h2>
+        <h2>Stage: 
+          <span class="badge badge-secondary display-4">{{ stage_id }}</span>
+          {{ difficulty }}
+        </h2>
     </div>
     <div class="col-1"></div>
     <div class="col-2 timer-rounded">
@@ -114,11 +117,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <h3>Are you ready? Rescue your objects.</h3>
+          <h3>Rescue your objects. Are you ready?</h3>
           <br>
           <div>Stage : {{ stage_id }}</div>
           <div>Difficulty : {{ difficulty }}</div>
           <div>Time : {{ seconds }}</div>
+          <div>Objects : {{ objects.length }}</div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button>
