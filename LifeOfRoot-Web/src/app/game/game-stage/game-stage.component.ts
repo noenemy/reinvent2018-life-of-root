@@ -24,6 +24,9 @@ export class GameStageComponent implements OnInit {
   imageSignedURL: string;
   total_score: number;
   objects: string[];
+  displayStageStartModal = 'none';
+  gameStarted: boolean = false;
+  difficulty: string = '';
 
   // toggle webcam on/off
   public showWebcam = true;
@@ -68,13 +71,24 @@ export class GameStageComponent implements OnInit {
     this.stageCompleted.emit(this.stage_id);
   }
 
+  onStageStart() {
+      // start game
+      this.displayStageStartModal = 'none';
+      this.gameStarted = true;
+      this.runTimer();
+  }
+
   public getStageInfo() {
     this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
       // get stage objects
       this.objects = stageInfo.stage_objects;
 
-      // start game
-      this.runTimer(stageInfo.stage_time);
+      // stage info
+      this.seconds = stageInfo.stage_time;
+      this.difficulty = stageInfo.stage_difficulty;
+
+      // show start modal dialog
+      this.displayStageStartModal = 'block';
     })
   }
 
@@ -116,9 +130,8 @@ export class GameStageComponent implements OnInit {
     clearInterval(this.intervalId);
   }
 
-  public runTimer(stageTime : number) {
+  public runTimer() {
     this.clearTimer();
-    this.seconds = stageTime;
     this.intervalId = window.setInterval(() => {
       this.seconds -= 0.1;
       if (this.seconds ===0 || this.seconds < 0) {

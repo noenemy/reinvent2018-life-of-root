@@ -91,18 +91,41 @@
 </div>
 
 <!-- object list -->
-<div class="row" *ngIf="objects">
-    <div class="col-2">
-    <div class="col-8">
-      <div *ngFor="let object of objects">
-          <button id="{{object}}" type="button" class="btn btn-warning btn-lg">{{ object }} 
-            <span class="glyphicon glyphicon-ok"></span>
-          </button>
-      </div> 
-    </div>
-    <div class="col-2"></div>
+<div class="row" *ngIf="gameStarted">
+  <div class="col-2"></div>
+  <div class="col-8">
+    <div *ngFor="let object of objects">
+        <button id="{{object}}" type="button" class="btn btn-warning btn-lg">{{ object }} 
+          <span class="glyphicon glyphicon-ok"></span>
+        </button>
+    </div> 
   </div>
+  <div class="col-2"></div>
+</div>
 
+<!-- Modal -->
+<div class="modal" id="modalStageStart" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageStartModal}">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalStageStart">Stage Start</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3>Are you ready? Rescue your objects.</h3>
+          <br>
+          <div>Stage : {{ stage_id }}</div>
+          <div>Difficulty : {{ difficulty }}</div>
+          <div>Time : {{ seconds }}</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button>
+        </div>
+      </div>
+    </div>
+  </div>  
 
 
 <h4 *ngIf="errors.length > 0">Messages:</h4>
