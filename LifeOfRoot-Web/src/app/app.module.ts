@@ -25,6 +25,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { DebugComponent } from './debug/debug.component';
 import { PlaydemoComponent } from './playdemo/playdemo.component';
 import { StageService } from './_services/stage.service';
+import { StageobjectService } from './_services/stageobject.service';
 
 @NgModule({
    declarations: [
@@ -54,6 +55,7 @@ import { StageService } from './_services/stage.service';
       GameService,
       StageService,
       StagelogService,
+      StageobjectService,
       GameResultService,
       RankingService,
       AlertifyService

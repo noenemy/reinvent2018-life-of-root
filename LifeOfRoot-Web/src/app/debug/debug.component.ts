@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GameService } from '../_services/game.service';
 import { Game } from '../_models/game';
-import { StagelogService } from '../_services/stagelog.service';
-import { StageLog } from '../_models/stagelog';
 import { GameResultService } from '../_services/gameresult.service';
 import { GameResult } from '../_models/gameresult';
+import { StageobjectService } from '../_services/stageobject.service';
+import { Stageobject } from '../_models/stageobject';
 
 @Component({
   selector: 'app-debug',
@@ -16,24 +16,24 @@ export class DebugComponent implements OnInit {
   gameResultColumns: string[];
   gameColumns: string[];
   castColumns: string[];
-  stageLogColumns: string[];
+  stageObjectColumns: string[];
   gameResults: GameResult[];
   games: Game[];
-  stageLogs: StageLog[];
+  stageObjects: Stageobject[];
 
   constructor(private http: HttpClient, 
     private gameService: GameService,
-    private stageLogService: StagelogService,
+    private stageObjectService: StageobjectService,
     private gameResultService: GameResultService) { }
 
   ngOnInit() {
     this.gameResultColumns = this.getGameResultColumns();
     this.gameColumns = this.getGameColumns();
     this.castColumns = this.getCastColumns();
-    this.stageLogColumns = this.getStageLogColumns();
+    this.stageObjectColumns = this.getStageObjectColumns();
     this.getGameResults();
     this.getGames();
-    this.getStageLogs();    
+    this.getStageObjects();    
   }
   getGameResults() {
     this.gameResultService.getGameResults().subscribe((gameResults: GameResult[]) => {
@@ -51,9 +51,9 @@ export class DebugComponent implements OnInit {
     });
   }
 
-  getStageLogs() {
-    this.stageLogService.getStageLogs().subscribe((stageLogs: StageLog[]) => {
-      this.stageLogs = stageLogs;
+  getStageObjects() {
+    this.stageObjectService.getStageObjects().subscribe((stageObjects: Stageobject[]) => {
+      this.stageObjects = stageObjects;
     }, error => {
       console.log(error);
     });
@@ -71,7 +71,7 @@ export class DebugComponent implements OnInit {
     return ['cast_id', 'title', 'actor', 'gender', 'grade', 'file_loc', 'action_type'];
   }
 
-  getStageLogColumns(): string[] {
-    return ['game_id', 'action_type', 'score', 'file_loc', 'age', 'gender', 'log_date'];
+  getStageObjectColumns(): string[] {
+    return ['game_id', 'stage_id', 'object_name', 'object_score', 'found_yn', 'file_loc', 'log_date'];
   }
 }
