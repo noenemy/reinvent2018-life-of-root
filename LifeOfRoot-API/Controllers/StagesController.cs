@@ -37,7 +37,6 @@ namespace GotTalent_API.Controllers
         {
             StageInfoDTO stageInfo = new StageInfoDTO();
 
-            //var values = await _context.StageObject.Where(x => x.game_id == game_id && x.stage_id == stage_id).ToListAsync();
             if (gameId == 0 || stageId == 0)
                 return BadRequest("Invalid Parameter. Please check game_id and stage_id parameter values.");
 
@@ -47,6 +46,7 @@ namespace GotTalent_API.Controllers
             // set gaming rule
             int difficulty = 0;
             int objectCount = 0;
+            int objectScore = 0;
             switch (stageId)
             {
                 case 1:
@@ -54,18 +54,21 @@ namespace GotTalent_API.Controllers
                     stageInfo.stage_difficulty = "Easy";
                     difficulty = 1;
                     objectCount = 3;
+                    objectScore = 50;
                     break;
                 case 2:
                     stageInfo.stage_time = 20;
                     stageInfo.stage_difficulty = "Medium";
                     difficulty = 2;
                     objectCount = 5;
+                    objectScore = 100;
                     break;
                 case 3:
                     stageInfo.stage_time = 30;
                     stageInfo.stage_difficulty = "Hard";
                     difficulty = 2;
                     objectCount = 10;
+                    objectScore = 100;
                     break;
                 default:
                     // need exception handling logic for bad stageId
@@ -73,7 +76,26 @@ namespace GotTalent_API.Controllers
             }
             
             // get object list randomly
-            stageInfo.stage_objects = GetRandomStageObjectList(gameId, stageId, difficulty, objectCount);
+            List<string> objectList = GetRandomStageObjectList(difficulty, objectCount);
+            stageInfo.stage_objects = objectList;
+
+            // Add object list to StageObject table
+            List<StageObject> stageObjectList = new List<StageObject>();
+            foreach (string item in objectList)
+            {
+                StageObject stageObject = new StageObject()
+                {
+                    game_id = gameId,
+                    stage_id = stageId,
+                    object_name = item,
+                    object_score = objectScore,
+                    found_yn = "N",
+                    log_date = DateTime.Now
+                };
+                stageObjectList.Add(stageObject);
+                _context.StageObject.Add(stageObject);
+            }
+            await _context.SaveChangesAsync();
 
             return Ok(stageInfo);
         }
@@ -140,9 +162,9 @@ namespace GotTalent_API.Controllers
             return Ok(stageScore);            
         }  
 
-        private List<String> GetRandomStageObjectList(int gameId, int stageId, int difficulty, int objectCount)
+        private List<string> GetRandomStageObjectList(int difficulty, int objectCount)
         {
-            List<String> objectList = new List<String>();
+            List<string> objectList = new List<String>();
 
             int recordCount = _context.Object.Where(x => x.difficulty == difficulty).Count();
             var records = _context.Object.Where(x => x.difficulty == difficulty);
@@ -158,23 +180,10 @@ namespace GotTalent_API.Controllers
                     if (objectList.Contains(record.object_name) == false)
                     {
                         objectList.Add(record.object_name);
-
-                        StageObject stageObject = new StageObject()
-                        {
-                            game_id = gameId,
-                            stage_id = stageId,
-                            object_name = record.object_name,
-                            object_score = record.object_score,
-                            found_yn = "N"
-                        };
-                        _context.StageObject.Add(stageObject);
-
                         loop = false;
                     }
                 }
             }
-
-            _context.SaveChangesAsync();
 
             return objectList;
         }   
