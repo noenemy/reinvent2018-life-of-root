@@ -8,6 +8,7 @@ namespace GotTalent_API.Data
         public DataContext(DbContextOptions<DataContext> options) : base (options) {}
 
         public DbSet<StageLog> StageLog { get; set; }
+        public DbSet<Object> Object { get; set; }
         public DbSet<StageObject> StageObject { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<Feedback> Feedback { get; set; }

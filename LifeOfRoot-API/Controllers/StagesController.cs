@@ -43,15 +43,37 @@ namespace GotTalent_API.Controllers
 
             stageInfo.game_id = gameId;
             stageInfo.stage_id = stageId;
-            stageInfo.stage_time = 30;
-            stageInfo.stage_difficulty = "Easy";
 
-            List<String> stageObjects = new List<string>();
-            stageObjects.Add("Tiger");
-            stageObjects.Add("Apple");
-            stageObjects.Add("Car");
-
-            stageInfo.stage_objects = stageObjects;
+            // set gaming rule
+            int difficulty = 0;
+            int objectCount = 0;
+            switch (stageId)
+            {
+                case 1:
+                    stageInfo.stage_time = 20;
+                    stageInfo.stage_difficulty = "Easy";
+                    difficulty = 1;
+                    objectCount = 3;
+                    break;
+                case 2:
+                    stageInfo.stage_time = 20;
+                    stageInfo.stage_difficulty = "Medium";
+                    difficulty = 2;
+                    objectCount = 5;
+                    break;
+                case 3:
+                    stageInfo.stage_time = 30;
+                    stageInfo.stage_difficulty = "Hard";
+                    difficulty = 2;
+                    objectCount = 10;
+                    break;
+                default:
+                    // need exception handling logic for bad stageId
+                    break;
+            }
+            
+            // get object list randomly
+            stageInfo.stage_objects = GetRandomObjectList(difficulty, objectCount);
 
             return Ok(stageInfo);
         }
@@ -98,6 +120,35 @@ namespace GotTalent_API.Controllers
             }
             
             return Ok(stageScore);            
-        }     
+        }  
+
+        private List<String> GetRandomObjectList(int difficulty, int objectCount)
+        {
+            List<String> objectList = new List<String>();
+
+            int recordCount = _context.Object.Where(x => x.difficulty == difficulty).Count();
+            var records = _context.Object.Where(x => x.difficulty == difficulty);
+
+            for (int i = 0; i < objectCount && i < recordCount; i++)
+            {
+                Console.WriteLine("searching :" + i);
+                bool loop = true;
+                while (loop)
+                {
+                    int randomRecord = new Random().Next() % recordCount;
+                    var record = records.Skip(randomRecord).Take(1).First();
+
+                    Console.WriteLine("Found record : " + record.object_name);
+
+                    if (objectList.Contains(record.object_name) == false)
+                    {
+                        objectList.Add(record.object_name);
+                        loop = false;
+                    }
+                }
+            }
+
+            return objectList;
+        }   
     }
 }
