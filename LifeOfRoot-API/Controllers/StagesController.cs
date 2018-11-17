@@ -73,7 +73,7 @@ namespace GotTalent_API.Controllers
             }
             
             // get object list randomly
-            stageInfo.stage_objects = GetRandomObjectList(difficulty, objectCount);
+            stageInfo.stage_objects = GetRandomStageObjectList(gameId, stageId, difficulty, objectCount);
 
             return Ok(stageInfo);
         }
@@ -88,9 +88,6 @@ namespace GotTalent_API.Controllers
             stageScore.game_id = dto.gameId;
             stageScore.stage_id = dto.stageId;
 
-            string bucketName = "reinvent-lifeofroot";
-            List<Label> labels = null;
-
             Guid g = Guid.NewGuid();
             string guidString = Convert.ToBase64String(g.ToByteArray());
             guidString = guidString.Replace("=","");
@@ -98,31 +95,52 @@ namespace GotTalent_API.Controllers
             guidString = guidString.Replace("/","");
 
             // Retrieving image data
-            // ex: test/guid.jpg
-            string keyName = string.Format("test/{0}.jpg", guidString);
             byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
             if (imageByteArray.Length == 0)
                 return BadRequest("Image length is 0.");
 
             bool found = false;
             int score = 0;
+
             using (MemoryStream ms = new MemoryStream(imageByteArray))
             {
                 // call Rekonition API
-                labels = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms);   
 
-                if (labels.Where(x => x.Name == "Car").Count() > 0)
+                List<Label> labels = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms); 
+                List<string> labelNames = new List<string>();
+                foreach (Label label in labels)
                 {
-                    stageScore.object_name = "Car";
-                    stageScore.object_score = 100;
+                    labelNames.Add(label.Name);
+                    Console.Write(label.Name + " ");
+                }
+
+                var matchedObject = _context.StageObject.Where(x => x.game_id == dto.gameId && 
+                                                x.stage_id == dto.stageId &&
+                                                x.found_yn == "N" &&
+                                                labelNames.Contains(x.object_name)).FirstOrDefault();
+                if (matchedObject != null)
+                {
+                    Console.WriteLine("Matched object: " + matchedObject.object_name);
+
+                    stageScore.object_name = matchedObject.object_name;
+                    stageScore.object_score = matchedObject.object_score;
+                    // TODO : calc stage score
                     stageScore.stage_score = 100;
+
+                    matchedObject.found_yn = "Y";
+                    _context.StageObject.Update(matchedObject);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    Console.WriteLine("no matched object");
                 }
             }
             
             return Ok(stageScore);            
         }  
 
-        private List<String> GetRandomObjectList(int difficulty, int objectCount)
+        private List<String> GetRandomStageObjectList(int gameId, int stageId, int difficulty, int objectCount)
         {
             List<String> objectList = new List<String>();
 
@@ -131,22 +149,32 @@ namespace GotTalent_API.Controllers
 
             for (int i = 0; i < objectCount && i < recordCount; i++)
             {
-                Console.WriteLine("searching :" + i);
                 bool loop = true;
                 while (loop)
                 {
                     int randomRecord = new Random().Next() % recordCount;
                     var record = records.Skip(randomRecord).Take(1).First();
 
-                    Console.WriteLine("Found record : " + record.object_name);
-
                     if (objectList.Contains(record.object_name) == false)
                     {
                         objectList.Add(record.object_name);
+
+                        StageObject stageObject = new StageObject()
+                        {
+                            game_id = gameId,
+                            stage_id = stageId,
+                            object_name = record.object_name,
+                            object_score = record.object_score,
+                            found_yn = "N"
+                        };
+                        _context.StageObject.Add(stageObject);
+
                         loop = false;
                     }
                 }
             }
+
+            _context.SaveChangesAsync();
 
             return objectList;
         }   

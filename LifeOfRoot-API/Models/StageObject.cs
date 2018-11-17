@@ -9,7 +9,7 @@ namespace GotTalent_API.Models
     {
         public int game_id { get; set; }
         public int stage_id { get; set; }
-        public string objects_name { get; set; }
+        public string object_name { get; set; }
         public int object_score { get; set; }
         public string found_yn { get; set; } // Y/N
         public string file_loc { get; set; } 

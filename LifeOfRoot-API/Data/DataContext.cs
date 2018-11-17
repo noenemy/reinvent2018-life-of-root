@@ -24,7 +24,7 @@ namespace GotTalent_API.Data
             modelBuilder.Entity<TestPictureLabel>()
                 .HasKey(c => new {c.picture_id, c.label_name});
             modelBuilder.Entity<StageObject>()
-                .HasKey(c => new {c.game_id, c.stage_id, c.objects_name});    
+                .HasKey(c => new {c.game_id, c.stage_id, c.object_name});    
         }
     }
 }
