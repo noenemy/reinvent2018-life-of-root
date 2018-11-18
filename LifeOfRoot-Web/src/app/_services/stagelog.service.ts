@@ -23,4 +23,8 @@ export class StagelogService {
   addStageLog(stage_log): Observable<StageLog> {
     return this.http.post<StageLog>(this.baseUrl + 'stagelogs', stage_log);
   }
+
+  updateStageLog(stage_log): Observable<StageLog> {
+    return this.http.put<StageLog>(this.baseUrl + 'stagelogs', stage_log);
+  }
 }

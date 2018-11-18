@@ -22,42 +22,51 @@ export class GameStageComponent implements OnInit {
   @Input() message2: string;
   @Output() stageCompleted = new EventEmitter<number>();
 
-  imageSignedURL: string;
-  total_score: number;
-  objects: string[];
-  displayStageStartModal = 'none';
-  gameStarted: boolean = false;
-  difficulty: string = '';
+  // stage info
+  public difficulty: string = '';
 
-  // toggle webcam on/off
-  public showWebcam = true;
-  public allowCameraSwitch = true;
-  public multipleWebcamsAvailable = false;
-  public deviceId: string;
-  public videoOptions: MediaTrackConstraints = {
-    // width: {ideal: 1024},
-    // height: {ideal: 576}
-  };
-  public errors: WebcamInitError[] = [];
+  // score info
+  public objects_score: number;
+  public time_score: number;
+  public clear_score: number;
+  public stage_score: number;
+  public total_score: number;
+  public stage_completed: string;
+
+  // object info
+  public objects: string[];
+  public total_object_count: number;
+  public found_object_count: number;
+  
+  // game status info
+  public gameStarted: boolean = false;
+
+  // modal control flags
+  public displayStageStartModal = 'none';
+  public displayStageClearModal = 'none';
+  public displayStageFailedModal = 'none';
+
+  // ===============================================================================
+  // Angular component constructor and destructor
 
   constructor(private http: HttpClient,
     private stageService: StageService,
     private stageLogService: StagelogService,
     private alertify: AlertifyService) { }
 
-  // latest snapshot
-  public webcamImage: WebcamImage = null;
-
-  // webcam snapshot trigger
-  private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
-
   ngOnInit() {
     WebcamUtil.getAvailableVideoInputs()
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
+
+    // Use enter key to get the current snapshot
+    document.body.addEventListener('keypress', function(event) {
+      if(event.keyCode === 13) {
+          console.log('You pressed Enter key.');
+          document.getElementById('buttonSnapshot').click();
+      }
+    });
 
     this.stage_id = 1;
     this.total_score = 0;
@@ -68,28 +77,39 @@ export class GameStageComponent implements OnInit {
     this.clearTimer();
   }
 
+  // ===============================================================================
+  // Game play flow related functions
+  onStageStart() {
+    // start game
+    this.displayStageStartModal = 'none';
+    this.gameStarted = true;
+
+    this.addStageLog();
+    this.runTimer();
+  }
+
+  onStageEnd() {
+    //
+    
+  }
+
   gameEnd() {
     console.log('game end!');
     this.stageCompleted.emit(this.stage_id);
   }
 
-  onStageStart() {
-      // start game
-      this.displayStageStartModal = 'none';
-      this.gameStarted = true;
-      
-      this.addStageLog();
-      this.runTimer();
-  }
-
+  // ===============================================================================
+  // API call handlers
   public getStageInfo() {
     this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
       // get stage objects
       this.objects = stageInfo.stage_objects;
+      this.total_object_count = stageInfo.stage_objects.length;
 
       // stage info
       this.seconds = stageInfo.stage_time;
       this.difficulty = stageInfo.stage_difficulty;
+      this.total_object_count = 0;
 
       // show start modal dialog
       this.displayStageStartModal = 'block';
@@ -137,11 +157,29 @@ export class GameStageComponent implements OnInit {
     });
   }
   
+  public updateStageLog() {
 
+    const stageLog = {
+      gameId: this.game_id,
+      stageId: this.stage_id,
+      objects_score: this.objects_score,
+      time_score: this.time_score,
+      clear_score: this.clear_score,
+      stage_score: this.objects_score + this.time_score,
+      completed_yn : this.stage_completed
+    };
+
+    this.stageLogService.updateStageLog(stageLog).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log('updateStageLog failed.');
+    });
+  }
+
+  // ===============================================================================
   // Timer handler
-  intervalId = 0;
-  message = '';
-  seconds = 0.0;
+  private intervalId = 0;
+  public seconds = 0.0;
 
   private clearTimer() {
     clearInterval(this.intervalId);
@@ -158,7 +196,30 @@ export class GameStageComponent implements OnInit {
     }, 100);
   }
 
+  // ===============================================================================
   // Webcam handler
+
+  // latest snapshot
+  public webcamImage: WebcamImage = null;
+
+  // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+
+  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
+  
+  // toggle webcam on/off
+  public showWebcam = true;
+  public allowCameraSwitch = true;
+  public multipleWebcamsAvailable = false;
+  public deviceId: string;
+  public videoOptions: MediaTrackConstraints = {
+    // width: {ideal: 1024},
+    // height: {ideal: 576}
+  };
+
+  public errors: WebcamInitError[] = [];
+
   public triggerSnapshot(): void {
     this.trigger.next();
     this.uploadPicture();

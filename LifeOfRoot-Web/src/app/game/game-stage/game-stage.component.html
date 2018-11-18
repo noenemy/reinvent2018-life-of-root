@@ -23,7 +23,7 @@
   <br>
 
   <!-- game play screen -->
-  <div class="row">
+  <div class="row w-100">
     <div class="col-3">
       <img src="../../../assets/images/judge/writing.jpeg">
     </div>
@@ -50,7 +50,8 @@
                 </webcam>
                 
                 <br/>
-                <button class="btn btn-primary btn-lg mr-2" (click)="triggerSnapshot();" *ngIf="action_type!='NoMoreAction'">
+                <button id="buttonSnapshot" class="btn btn-primary btn-lg mr-2" 
+                  (click)="triggerSnapshot();" *ngIf="gameStarted">
                   <fa name="camera"></fa> Take A Snapshot
                 </button>
                 <!-- <button class="btn btn-secondary btn-lg" (click)="toggleWebcam();" *ngIf="action_type!='NoMoreAction'">

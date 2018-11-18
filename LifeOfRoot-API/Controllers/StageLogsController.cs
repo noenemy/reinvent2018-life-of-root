@@ -60,7 +60,8 @@ namespace GotTalent_API.Controllers
                     stage_id = dto.stageId,
                     objects_score = 0,
                     time_score = 0,
-                    total_score = 0,
+                    clear_score = 0,
+                    stage_score = 0,
                     completed_yn = "N",
                     start_date = DateTime.Now 
                 };
@@ -84,7 +85,8 @@ namespace GotTalent_API.Controllers
 
             stageLog.objects_score = dto.objects_score;
             stageLog.time_score = dto.time_score;
-            stageLog.total_score = dto.total_score;
+            stageLog.clear_score = dto.clear_score;
+            stageLog.stage_score = dto.stage_score;
             stageLog.completed_yn = dto.completed_yn;
             stageLog.end_date = DateTime.Now;
 
