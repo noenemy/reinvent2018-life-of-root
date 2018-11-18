@@ -69,7 +69,7 @@ namespace GotTalent_API.Controllers
             var value = _context.StageLog.Add(newStageLog);
             await _context.SaveChangesAsync();  
 
-            return Ok(value);            
+            return Ok(dto.game_id);            
         }
 
         // PUT api/stagelogs/5
@@ -95,7 +95,7 @@ namespace GotTalent_API.Controllers
             var value = _context.StageLog.Update(stageLog);
             await _context.SaveChangesAsync();  
 
-            return Ok(value);     
+            return Ok(dto.game_id);     
         }
 
         // DELETE api/stagelogs/5

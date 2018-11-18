@@ -41,10 +41,11 @@ export class GameStageComponent implements OnInit {
   // game status info
   public gameStarted: boolean = false;
 
-  // modal control flags
+  // display control flags
   public displayStageStartModal = 'none';
   public displayStageClearModal = 'none';
   public displayStageFailedModal = 'none';
+  public displayObjectList : boolean = false;
 
   // ===============================================================================
   // Angular component constructor and destructor
@@ -82,6 +83,7 @@ export class GameStageComponent implements OnInit {
   onStageStart() {
     // start game
     this.displayStageStartModal = 'none';
+    this.displayObjectList = true;
     this.gameStarted = true;
 
     this.addStageLog();
@@ -90,7 +92,19 @@ export class GameStageComponent implements OnInit {
 
   onStageEnd() {
     //
-    
+    this.displayStageClearModal = 'none';
+    this.displayStageFailedModal = 'none';
+
+    if (this.stage_completed == "Y" && this.stage_id < 3)
+    {
+      this.stage_id++;
+      this.displayObjectList = false;
+
+      this.getStageInfo();
+    } else {
+      // go to result page
+      this.stageCompleted.emit(this.stage_id);
+    }
   }
 
   gameEnd() {
@@ -217,9 +231,22 @@ export class GameStageComponent implements OnInit {
     this.clearTimer();
     this.intervalId = window.setInterval(() => {
       this.seconds -= 0.1;
+
       if (this.seconds ===0 || this.seconds < 0) {
         this.clearTimer();
-        this.alertify.warning('Game Over!');
+        this.seconds = 0;
+
+        this.clear_score = 0;
+        this.time_score = 0;
+        this.stage_score = this.objects_score;
+        this.stage_completed = "N";
+
+        this.alertify.success('Time over!');
+        
+        this.updateStageLog();
+      
+        // show stage failed modal dialog
+        this.displayStageFailedModal = 'block';
       }
     }, 100);
   }

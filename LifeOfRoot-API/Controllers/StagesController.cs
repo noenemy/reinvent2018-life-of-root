@@ -57,14 +57,14 @@ namespace GotTalent_API.Controllers
                     objectScore = 50;
                     break;
                 case 2:
-                    stageInfo.stage_time = 60;
+                    stageInfo.stage_time = 80;
                     stageInfo.stage_difficulty = "Medium";
                     difficulty = 2;
                     objectCount = 5;
                     objectScore = 100;
                     break;
                 case 3:
-                    stageInfo.stage_time = 60;
+                    stageInfo.stage_time = 100;
                     stageInfo.stage_difficulty = "Hard";
                     difficulty = 2;
                     objectCount = 10;
