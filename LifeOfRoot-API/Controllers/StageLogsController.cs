@@ -50,89 +50,48 @@ namespace GotTalent_API.Controllers
 
         // POST api/stagelogs
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] StagePostImageDTO dto)
+        public async Task<IActionResult> Post([FromBody] StageLogPostDTO dto)
         {
             Console.WriteLine("stagelogs POST entered.");
-
-            // Getting random stage objects for the stage
-            int stageTime = 30; // 30 seconds
-            int stageObjectCount = GetStageobjectCount(dto.stageId);
-
-            List<string> stageObjectList = new List<string>();
-
-            // TODO : temporary stage objects list
-            stageObjectList.Add("Tiger");
-            stageObjectList.Add("Fish");
-            stageObjectList.Add("Piano");
 
             // Add a stage log record
             StageLog newStageLog = new StageLog{
                     game_id = dto.gameId,
                     stage_id = dto.stageId,
+                    objects_score = 0,
+                    time_score = 0,
+                    total_score = 0,
                     completed_yn = "N",
                     start_date = DateTime.Now 
                 };
             var value = _context.StageLog.Add(newStageLog);
             await _context.SaveChangesAsync();  
 
-            // Add stage objects
-            foreach (string stageObject in stageObjectList)
-            {
-                StageObject newStageObject = new StageObject{
-                    game_id = dto.gameId,
-                    stage_id = dto.stageId,
-                    object_score = 10,
-                    found_yn = "N",
-                    log_date = DateTime.Now
-                };
-                _context.StageObject.Add(newStageObject);
-                await _context.SaveChangesAsync();  
-            }
-
-            return Ok(new {newStageLog, stageObjectList});            
-        }
-
-        private int GetStageobjectCount(int stageId)
-        {
-            int stageObjectCount = 0;
-            switch (stageId)
-            {
-                case 1:
-                    stageObjectCount = 3;
-                    break;
-                case 2:
-                    stageObjectCount = 5;
-                    break;
-                case 3:
-                    stageObjectCount = 10;
-                    break;
-                case 4:
-                    stageObjectCount = 15;
-                    break;
-                default:
-                    stageObjectCount = 0;
-                    break;
-            }
-            return stageObjectCount;
-        }
-        public static System.Drawing.Image GetCroppedFaceImage(System.Drawing.Image originalImage, BoundingBox box)
-        {
-            int left = Convert.ToInt32(originalImage.Width * box.Left);
-            int top = Convert.ToInt32(originalImage.Height * box.Top);
-            int width = Convert.ToInt32(originalImage.Width * box.Width);
-            int height = Convert.ToInt32(originalImage.Height * box.Height);
-
-            Rectangle rect = new Rectangle(left - (width*1/3), top - (height*2/5), width+(width*2/3), height+(height*2/3));
-            Bitmap bmp = originalImage as Bitmap;
-            Bitmap croppedImage = bmp.Clone(rect, bmp.PixelFormat);
-
-            return croppedImage;
+            return Ok(value);            
         }
 
         // PUT api/stagelogs/5
-        [HttpPut("{game_id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] StageLogPutDTO dto)
         {
+            Console.WriteLine("stagelogs PUT entered.");
+
+            var stageLog = _context.StageLog.Where(x => x.game_id == dto.game_id && x.stage_id == dto.stage_id).FirstOrDefault();
+            if (stageLog == null)
+            {
+                return NotFound();
+            }
+
+            stageLog.objects_score = dto.objects_score;
+            stageLog.time_score = dto.time_score;
+            stageLog.total_score = dto.total_score;
+            stageLog.completed_yn = dto.completed_yn;
+            stageLog.end_date = DateTime.Now;
+
+            var value = _context.StageLog.Update(stageLog);
+            await _context.SaveChangesAsync();  
+
+            return Ok(value);     
         }
 
         // DELETE api/stagelogs/5

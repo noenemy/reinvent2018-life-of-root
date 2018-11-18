@@ -6,6 +6,8 @@ import { GameResultService } from '../_services/gameresult.service';
 import { GameResult } from '../_models/gameresult';
 import { StageobjectService } from '../_services/stageobject.service';
 import { Stageobject } from '../_models/stageobject';
+import { StagelogService } from '../_services/stagelog.service';
+import { StageLog } from '../_models/stagelog';
 
 @Component({
   selector: 'app-debug',
@@ -17,13 +19,16 @@ export class DebugComponent implements OnInit {
   gameColumns: string[];
   castColumns: string[];
   stageObjectColumns: string[];
+  stageLogColumns: string[];
   gameResults: GameResult[];
   games: Game[];
   stageObjects: Stageobject[];
+  stageLogs: StageLog[];
 
   constructor(private http: HttpClient, 
     private gameService: GameService,
     private stageObjectService: StageobjectService,
+    private stageLogService: StagelogService,
     private gameResultService: GameResultService) { }
 
   ngOnInit() {
@@ -31,9 +36,11 @@ export class DebugComponent implements OnInit {
     this.gameColumns = this.getGameColumns();
     this.castColumns = this.getCastColumns();
     this.stageObjectColumns = this.getStageObjectColumns();
+    this.stageLogColumns = this.getStageLogColumns();
     this.getGameResults();
     this.getGames();
-    this.getStageObjects();    
+    this.getStageObjects();
+    this.getStageLogs();
   }
   getGameResults() {
     this.gameResultService.getGameResults().subscribe((gameResults: GameResult[]) => {
@@ -59,6 +66,14 @@ export class DebugComponent implements OnInit {
     });
   }
 
+  getStageLogs() {
+    this.stageLogService.getStageLogs().subscribe((stageLogs: StageLog[]) => {
+      this.stageLogs = stageLogs;
+    }, error => {
+      console.log(error);
+    });
+  }
+
   getGameResultColumns(): string[] {
     return ['game_id', 'result_page_url', 'total_score', 'total_rank', 'cast_result', 'grade_result', 'gender_result', 'age_result'];
   }
@@ -73,5 +88,9 @@ export class DebugComponent implements OnInit {
 
   getStageObjectColumns(): string[] {
     return ['game_id', 'stage_id', 'object_name', 'object_score', 'found_yn', 'file_loc', 'log_date'];
+  }
+
+  getStageLogColumns(): string[] {
+    return ['game_id', 'stage_id', 'objects_score', 'time_score', 'total_score', 'completed_yn', 'start_date', 'end_date'];
   }
 }

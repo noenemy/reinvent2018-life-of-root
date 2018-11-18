@@ -7,6 +7,7 @@ import { StageService } from 'src/app/_services/stage.service';
 import { Stageinfo } from 'src/app/_models/stageinfo';
 import { Stagescore } from 'src/app/_models/stagescore';
 import { AngularFontAwesomeComponent } from 'angular-font-awesome';
+import { StagelogService } from 'src/app/_services/stagelog.service';
 
 @Component({
   selector: 'app-game-stage',
@@ -41,6 +42,7 @@ export class GameStageComponent implements OnInit {
 
   constructor(private http: HttpClient,
     private stageService: StageService,
+    private stageLogService: StagelogService,
     private alertify: AlertifyService) { }
 
   // latest snapshot
@@ -75,6 +77,8 @@ export class GameStageComponent implements OnInit {
       // start game
       this.displayStageStartModal = 'none';
       this.gameStarted = true;
+      
+      this.addStageLog();
       this.runTimer();
   }
 
@@ -92,19 +96,17 @@ export class GameStageComponent implements OnInit {
     })
   }
 
-  public addStageLog() {
+  public uploadPicture() {
 
     this.alertify.message('Now working on it...');
 
-    const stageLog = {
+    const pictureInfo = {
       gameId: this.game_id,
       stageId: this.stage_id,
       base64Image: this.webcamImage.imageAsBase64
     };
 
-    this.stageService.uploadPicture(stageLog).subscribe((stageScore: Stagescore) => {
-
-      this.alertify.success('Successfully uploaded!');
+    this.stageService.uploadPicture(pictureInfo).subscribe((stageScore: Stagescore) => {
 
       let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
       if (element) {
@@ -117,9 +119,24 @@ export class GameStageComponent implements OnInit {
       }
 
     }, error => {
-      this.alertify.error('Hey. something wrong. Try again.');
+      this.alertify.error('Something wrong. Try again.');
     });
   }
+
+  public addStageLog() {
+
+    const stageLog = {
+      gameId: this.game_id,
+      stageId: this.stage_id
+    };
+
+    this.stageLogService.addStageLog(stageLog).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log('addStageLog failed.');
+    });
+  }
+  
 
   // Timer handler
   intervalId = 0;
@@ -144,7 +161,7 @@ export class GameStageComponent implements OnInit {
   // Webcam handler
   public triggerSnapshot(): void {
     this.trigger.next();
-    this.addStageLog();
+    this.uploadPicture();
   }
 
   public toggleWebcam(): void {

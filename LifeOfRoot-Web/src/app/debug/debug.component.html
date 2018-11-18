@@ -54,3 +54,21 @@
     </tr>
   </table>
 </div>
+
+<br>
+<h1 class="text-secondary text-center">tb_stage_log</h1>
+<br>
+<div class="container">
+  <table class="table table-striped table-info">
+    <tr>
+        <th *ngFor="let col of stageLogColumns">
+          {{col}}
+        </th>
+      </tr>    
+    <tr *ngFor="let stageLog of stageLogs">
+      <td *ngFor="let col of stageLogColumns">
+        {{stageLog[col]}}
+      </td>
+    </tr>
+  </table>
+</div>

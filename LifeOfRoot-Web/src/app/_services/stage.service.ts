@@ -17,6 +17,14 @@ export class StageService {
     return this.http.get<Stageinfo>(this.baseUrl + 'stages?game_id=' + game_id + '&stage_id=' + stage_id);
   }
 
+  startStage(stage_info): Observable<number> {
+    return this.http.post<number>(this.baseUrl + 'stageslogs', stage_info);
+  }
+
+  endStage(stage_info): Observable<number> {
+    return this.http.put<number>(this.baseUrl + 'stageslogs', stage_info);
+  }
+
   uploadPicture(stage_object): Observable<Stagescore> {
     return this.http.post<Stagescore>(this.baseUrl + 'stages', stage_object);
   }
