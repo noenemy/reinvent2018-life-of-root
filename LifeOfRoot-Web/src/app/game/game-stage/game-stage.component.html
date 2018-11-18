@@ -1,21 +1,27 @@
-<div class="container">
+<div class="container-fluid">
 
   <!-- stage info header  -->
   <div class="row align-items-center">
-    <div class="col-1"></div>
-    <div class="col-3">
-        <h2>Stage: 
-          <span class="badge badge-secondary display-4">{{ stage_id }}</span>
-          {{ difficulty }}
-        </h2>
+    <div class="col-2"></div>
+    <div class="col-1 text-center">
+      <h5>S T A G E</h5>
+      <div class="label-rounded container">
+        <h1 class="display-4">{{ stage_id }}</h1>
+      </div>
     </div>
-    <div class="col-1"></div>
-    <div class="col-2 timer-rounded">
-        <h1 class="display-4">{{ seconds | number }}</h1>      
+    <div class="col-2"></div>
+    <div class="col-2 text-center">
+      <h5>P L A Y  T I M E</h5>
+      <div class="timer-rounded container">
+        <h1 class="display-4">{{ seconds | number }}</h1>  
+      </div>    
     </div>
-    <div class="col-1"></div>
-    <div class="col-3">
-      <h2>Total Score: <span class="badge badge-secondary display-4">{{ total_score }}</span></h2>
+    <div class="col-2"></div>
+    <div class="col-2 text-center">
+      <h5>S C O R E</h5>
+      <div class="label-rounded container">
+        <h1 class="display-4">{{ total_score }}</h1>  
+      </div> 
     </div>
     <div class="col-1"></div>
   </div>
@@ -23,7 +29,7 @@
   <br>
 
   <!-- game play screen -->
-  <div class="row w-100">
+  <div class="row text-right">
     <div class="col-3">
       <img src="../../../assets/images/judge/writing.jpeg">
     </div>
@@ -36,10 +42,10 @@
       </div>
       -->
 
-      <div class="container mt-1">
+      <div class="container mt-5">
         <div class="row">
           <!-- left: webcam pane -->
-          <div class="col-8">
+          <div class="col-7">
 
               <div class="text-center">
                 <webcam [height]="520" [width]="650" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
@@ -64,10 +70,9 @@
           <!-- left: webcam pane -->
 
           <!-- right: result pane -->
-          <div class="col-4">
-            <br><br>
+          <div class="col-5 text-right">
             <div class="container" *ngIf="webcamImage">
-                <div class="snapshot card" style="width: 12rem;">
+                <div class="snapshot card pull-right" style="width: 20rem;">
                   <img class="card-img-top" [src]="webcamImage.imageAsDataUrl" alt="Card image cap">
                   <div class="card-body">
                     <h5 class="card-title">Your Score</h5>
@@ -95,16 +100,19 @@
 </div>
 
 <!-- object list -->
-<div class="row" *ngIf="gameStarted">
-  <div class="col-2"></div>
-  <div class="col-8">
-    <div *ngFor="let object of objects">
-        <button id="{{object}}" type="button" class="btn btn-warning btn-lg">{{ object }} 
-          <span class="glyphicon glyphicon-ok"></span>
-        </button>
-    </div> 
+<div class="row">
+  <div class="container-fluid object-list mr-5 ml-5">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <div>
+        <h1>Found : {{ found_object_count }} of {{ total_object_count }}</h1>
+      </div>
+      <div class="container-fluid" *ngIf="gameStarted">
+          <button *ngFor="let object of objects" id="{{object}}" type="button" class="btn btn-warning btn-lg mr-4 object-font">{{ object }}</button>
+      </div> 
+    </div>
+    <div class="col-2"></div>
   </div>
-  <div class="col-2"></div>
 </div>
 
 <!-- Modal -->

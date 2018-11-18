@@ -105,6 +105,7 @@ export class GameStageComponent implements OnInit {
       // get stage objects
       this.objects = stageInfo.stage_objects;
       this.total_object_count = stageInfo.stage_objects.length;
+      this.found_object_count = 0;
 
       // stage info
       this.seconds = stageInfo.stage_time;
