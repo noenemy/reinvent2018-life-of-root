@@ -178,6 +178,7 @@ export class GameStageComponent implements OnInit {
 
           // show stage clear modal dialog
           this.displayStageClearModal = 'block';
+          this.audioStageClear.play();
         }
       } else {
         this.audioNotFound.play();
@@ -257,6 +258,7 @@ export class GameStageComponent implements OnInit {
       
         // show stage failed modal dialog
         this.displayStageFailedModal = 'block';
+        this.audioStageFailed.play();
       }
     }, 100);
   }
@@ -333,6 +335,8 @@ export class GameStageComponent implements OnInit {
   audioShutter = new Audio();
   audioFound = new Audio();
   audioNotFound = new Audio();
+  audioStageClear = new Audio();
+  audioStageFailed = new Audio();
 
   public loadAudio()
   {
@@ -348,6 +352,12 @@ export class GameStageComponent implements OnInit {
 
     this.audioNotFound.src = "../../../assets/audios/not-found.mp3";
     this.audioNotFound.load();
+
+    this.audioStageClear.src = "../../../assets/audios/stage-clear.mp3";
+    this.audioStageClear.load();
+
+    this.audioStageFailed.src = "../../../assets/audios/stage-fail.mp3";
+    this.audioStageFailed.load();
   }
 
 }
