@@ -4,8 +4,8 @@ namespace GotTalent_API.DTOs
 {
     public class StagePostImageDTO
     {
-        public int gameId { get; set; }
-        public int stageId { get; set; }
+        public int game_id { get; set; }
+        public int stage_id { get; set; }
         public string base64Image { get; set; }
     }
 

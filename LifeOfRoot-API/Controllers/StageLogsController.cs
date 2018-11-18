@@ -56,12 +56,13 @@ namespace GotTalent_API.Controllers
 
             // Add a stage log record
             StageLog newStageLog = new StageLog{
-                    game_id = dto.gameId,
-                    stage_id = dto.stageId,
+                    game_id = dto.game_id,
+                    stage_id = dto.stage_id,
                     objects_score = 0,
                     time_score = 0,
                     clear_score = 0,
                     stage_score = 0,
+                    total_score = 0,
                     completed_yn = "N",
                     start_date = DateTime.Now 
                 };
@@ -87,6 +88,7 @@ namespace GotTalent_API.Controllers
             stageLog.time_score = dto.time_score;
             stageLog.clear_score = dto.clear_score;
             stageLog.stage_score = dto.stage_score;
+            stageLog.total_score = dto.total_score;
             stageLog.completed_yn = dto.completed_yn;
             stageLog.end_date = DateTime.Now;
 

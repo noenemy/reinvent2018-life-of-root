@@ -105,7 +105,7 @@
     <div class="col-2"></div>
     <div class="col-8">
       <div>
-        <h1>Found : {{ found_object_count }} of {{ total_object_count }}</h1>
+      <h3>Found : {{ found_object_count }} / {{ total_object_count }}</h3>
       </div>
       <div class="container-fluid" *ngIf="gameStarted">
           <button *ngFor="let object of objects" id="{{object}}" type="button" class="btn btn-warning btn-lg mr-4 object-font">{{ object }}</button>
@@ -115,31 +115,57 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal : modalStageStart -->
 <div class="modal" id="modalStageStart" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageStartModal}">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalStageStart">Stage Start</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <h3>Rescue your objects. Are you ready?</h3>
-          <br>
-          <div>Stage : {{ stage_id }}</div>
-          <div>Difficulty : {{ difficulty }}</div>
-          <div>Time : {{ seconds }}</div>
-          <div>Objects : {{ objects.length }}</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button>
-        </div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalStageStart">Ready</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Rescue your objects. Are you ready?</h3>
+        <br>
+        <div>Stage : {{ stage_id }}</div>
+        <div>Difficulty : {{ difficulty }}</div>
+        <div>Time : {{ seconds }}</div>
+        <div>Objects : {{ objects.length }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button>
       </div>
     </div>
-  </div>  
+  </div>
+</div>  
 
+<!-- Modal : modalStageClear -->
+<div class="modal" id="modalStageClear" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageClearModal}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalStageStart">Stage Result</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>STAGE CLEAR</h3>
+        <br>
+        <div>Stage : {{ stage_id }}</div>
+        <div>Found Score : {{ objects_score }}</div>
+        <div>Clear Bonus : {{ clear_score }}</div>
+        <div>Time Bonus : {{ time_score }}</div>
+        <div>Stage Score : {{ stage_score }}</div>
+        <div>Total Score : {{ total_score }}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onStageEnd()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>  
 
 <h4 *ngIf="errors.length > 0">Messages:</h4>
 <ul *ngFor="let error of errors">

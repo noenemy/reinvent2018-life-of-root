@@ -50,21 +50,21 @@ namespace GotTalent_API.Controllers
             switch (stageId)
             {
                 case 1:
-                    stageInfo.stage_time = 20;
+                    stageInfo.stage_time = 60;
                     stageInfo.stage_difficulty = "Easy";
                     difficulty = 1;
                     objectCount = 3;
                     objectScore = 50;
                     break;
                 case 2:
-                    stageInfo.stage_time = 20;
+                    stageInfo.stage_time = 60;
                     stageInfo.stage_difficulty = "Medium";
                     difficulty = 2;
                     objectCount = 5;
                     objectScore = 100;
                     break;
                 case 3:
-                    stageInfo.stage_time = 30;
+                    stageInfo.stage_time = 60;
                     stageInfo.stage_difficulty = "Hard";
                     difficulty = 2;
                     objectCount = 10;
@@ -107,8 +107,8 @@ namespace GotTalent_API.Controllers
             Console.WriteLine("PostImage entered.");
 
             StageScoreDTO stageScore = new StageScoreDTO();
-            stageScore.game_id = dto.gameId;
-            stageScore.stage_id = dto.stageId;
+            stageScore.game_id = dto.game_id;
+            stageScore.stage_id = dto.stage_id;
 
             Guid g = Guid.NewGuid();
             string guidString = Convert.ToBase64String(g.ToByteArray());
@@ -136,8 +136,8 @@ namespace GotTalent_API.Controllers
                     Console.Write(label.Name + " ");
                 }
 
-                var matchedObject = _context.StageObject.Where(x => x.game_id == dto.gameId && 
-                                                x.stage_id == dto.stageId &&
+                var matchedObject = _context.StageObject.Where(x => x.game_id == dto.game_id && 
+                                                x.stage_id == dto.stage_id &&
                                                 x.found_yn == "N" &&
                                                 labelNames.Contains(x.object_name)).FirstOrDefault();
                 if (matchedObject != null)

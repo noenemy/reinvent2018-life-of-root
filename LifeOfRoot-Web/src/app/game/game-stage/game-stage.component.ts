@@ -35,8 +35,8 @@ export class GameStageComponent implements OnInit {
 
   // object info
   public objects: string[];
-  public total_object_count: number;
-  public found_object_count: number;
+  public total_object_count: number = 0;
+  public found_object_count: number = 0;
   
   // game status info
   public gameStarted: boolean = false;
@@ -104,13 +104,18 @@ export class GameStageComponent implements OnInit {
     this.stageService.getStage(this.game_id, this.stage_id).subscribe((stageInfo: Stageinfo) => {
       // get stage objects
       this.objects = stageInfo.stage_objects;
-      this.total_object_count = stageInfo.stage_objects.length;
+      this.total_object_count = this.objects.length;
       this.found_object_count = 0;
+
+      // init score
+      this.objects_score = 0;
+      this.time_score = 0;
+      this.clear_score = 0;
+      this.stage_score = 0;
 
       // stage info
       this.seconds = stageInfo.stage_time;
       this.difficulty = stageInfo.stage_difficulty;
-      this.total_object_count = 0;
 
       // show start modal dialog
       this.displayStageStartModal = 'block';
@@ -122,8 +127,8 @@ export class GameStageComponent implements OnInit {
     this.alertify.message('Now working on it...');
 
     const pictureInfo = {
-      gameId: this.game_id,
-      stageId: this.stage_id,
+      game_id: this.game_id,
+      stage_id: this.stage_id,
       base64Image: this.webcamImage.imageAsBase64
     };
 
@@ -132,9 +137,30 @@ export class GameStageComponent implements OnInit {
       let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
       if (element) {
         element.style.backgroundColor = 'grey';
+
+        this.objects_score += stageScore.object_score;
         this.total_score += stageScore.object_score;
+        this.found_object_count++;
 
         this.alertify.success('Great!');
+        if (this.found_object_count == this.total_object_count)
+        {
+          this.clearTimer();
+          
+          this.clear_score = this.stage_id * 300;
+          this.time_score = Math.round(this.seconds * 100);
+          this.total_score += this.clear_score;
+          this.total_score += this.time_score;
+          this.stage_score = this.objects_score + this.clear_score + this.time_score;
+          this.stage_completed = "Y";
+
+          this.alertify.success('You found all objects!');
+          
+          this.updateStageLog();
+
+          // show stage clear modal dialog
+          this.displayStageClearModal = 'block';
+        }
       } else {
         this.alertify.warning('Not found!');
       }
@@ -147,8 +173,8 @@ export class GameStageComponent implements OnInit {
   public addStageLog() {
 
     const stageLog = {
-      gameId: this.game_id,
-      stageId: this.stage_id
+      game_id: this.game_id,
+      stage_id: this.stage_id
     };
 
     this.stageLogService.addStageLog(stageLog).subscribe(response => {
@@ -161,12 +187,13 @@ export class GameStageComponent implements OnInit {
   public updateStageLog() {
 
     const stageLog = {
-      gameId: this.game_id,
-      stageId: this.stage_id,
+      game_id: this.game_id,
+      stage_id: this.stage_id,
       objects_score: this.objects_score,
       time_score: this.time_score,
       clear_score: this.clear_score,
-      stage_score: this.objects_score + this.time_score,
+      stage_score: this.stage_score,
+      total_score: this.total_score,
       completed_yn : this.stage_completed
     };
 

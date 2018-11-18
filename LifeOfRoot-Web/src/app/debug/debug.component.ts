@@ -91,6 +91,6 @@ export class DebugComponent implements OnInit {
   }
 
   getStageLogColumns(): string[] {
-    return ['game_id', 'stage_id', 'objects_score', 'time_score', 'total_score', 'completed_yn', 'start_date', 'end_date'];
+    return ['game_id', 'stage_id', 'objects_score', 'time_score', 'clear_score', 'stage_score', 'completed_yn', 'start_date', 'end_date'];
   }
 }

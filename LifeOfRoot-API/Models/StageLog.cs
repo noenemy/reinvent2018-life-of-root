@@ -13,6 +13,7 @@ namespace GotTalent_API.Models
         public int time_score { get; set; }
         public int clear_score { get; set; }
         public int stage_score { get; set; }
+        public int total_score { get; set; }
         public string completed_yn { get; set; } // Y/N
         public DateTime start_date { get; set; } 
         public DateTime? end_date { get; set; } 

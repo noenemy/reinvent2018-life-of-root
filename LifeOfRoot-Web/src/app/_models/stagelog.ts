@@ -5,6 +5,7 @@ export interface StageLog {
     time_score: number;
     clear_score: number;
     stage_score: number;
+    total_score: number;
     completed_yn: string;
     start_date: Date;
     end_date: Date;

@@ -4,8 +4,8 @@ namespace GotTalent_API.DTOs
 {
     public class StageLogPostDTO
     {
-        public int gameId { get; set; }
-        public int stageId { get; set; }
+        public int game_id { get; set; }
+        public int stage_id { get; set; }
     }
 
     public class StageLogPutDTO
@@ -16,6 +16,7 @@ namespace GotTalent_API.DTOs
         public int time_score { get; set; }
         public int clear_score { get; set; }
         public int stage_score { get; set; }
+        public int total_score { get; set; }
         public string completed_yn { get; set; }
     }
 }
