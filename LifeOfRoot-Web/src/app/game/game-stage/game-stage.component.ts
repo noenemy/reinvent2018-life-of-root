@@ -69,6 +69,8 @@ export class GameStageComponent implements OnInit {
       }
     });
 
+    this.loadAudio();
+
     this.stage_id = 1;
     this.total_score = 0;
     this.getStageInfo();
@@ -150,6 +152,8 @@ export class GameStageComponent implements OnInit {
 
       let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
       if (element) {
+        this.audioFound.play();
+
         element.style.backgroundColor = 'grey';
 
         this.objects_score += stageScore.object_score;
@@ -176,6 +180,8 @@ export class GameStageComponent implements OnInit {
           this.displayStageClearModal = 'block';
         }
       } else {
+        this.audioNotFound.play();
+
         this.alertify.warning('Not found!');
       }
 
@@ -224,11 +230,15 @@ export class GameStageComponent implements OnInit {
   public seconds = 0.0;
 
   private clearTimer() {
+    this.audioClock.pause();
     clearInterval(this.intervalId);
   }
 
   public runTimer() {
     this.clearTimer();
+
+    this.audioClock.play();
+
     this.intervalId = window.setInterval(() => {
       this.seconds -= 0.1;
 
@@ -277,6 +287,9 @@ export class GameStageComponent implements OnInit {
 
   public triggerSnapshot(): void {
     this.trigger.next();
+
+    this.audioShutter.play();
+
     this.uploadPicture();
   }
 
@@ -312,5 +325,30 @@ export class GameStageComponent implements OnInit {
   public get nextWebcamObservable(): Observable<boolean|string> {
     return this.nextWebcam.asObservable();
   }
+
+  // ===============================================================================
+  // audio handler
+
+  audioClock = new Audio();
+  audioShutter = new Audio();
+  audioFound = new Audio();
+  audioNotFound = new Audio();
+
+  public loadAudio()
+  {
+    this.audioClock.src = "../../../assets/audios/clock-ticking.mp3";
+    this.audioClock.loop = true;
+    this.audioClock.load();
+
+    this.audioShutter.src = "../../../assets/audios/camera-shutter-click.mp3";
+    this.audioShutter.load();
+
+    this.audioFound.src = "../../../assets/audios/found.mp3";
+    this.audioFound.load();
+
+    this.audioNotFound.src = "../../../assets/audios/not-found.mp3";
+    this.audioNotFound.load();
+  }
+
 }
 
