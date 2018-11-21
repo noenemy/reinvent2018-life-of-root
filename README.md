@@ -56,11 +56,11 @@ This demo is to play a simple game using facial expression to be recognized usin
 2. Move to your project folder
    - cd reinvent2018-got-talent
 3. For API project (.Net core)
-   - cd GotTalent-API
+   - cd LifeofRoot-API
    - dotnet run (or dotnet watch run)
    - Kestrel server will run on http://localhost:5000
 4. For Web project (AngularJS)
-   - cd GotTalent-Web
+   - cd LifeofRoot-Web
    - npm update (only requires the first time for downloading app-modules)
    - ng serve
    - The website will run on http://localhost:4200

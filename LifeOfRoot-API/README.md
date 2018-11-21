@@ -1,4 +1,4 @@
-# GotTalent-API
+# LifeofRoot-API
 
 This project was generated with .Net core(https://www.microsoft.com/net/download) version 2.1.
 
@@ -13,4 +13,4 @@ Run `dotnet build` to build the project.
 
 ## Running end-to-end tests
 
-Test via GotTalent-Web site('http://localhost:4200/').
+Test via LifeofRoot-Web site('http://localhost:4200/').
