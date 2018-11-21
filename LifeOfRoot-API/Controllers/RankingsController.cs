@@ -29,7 +29,7 @@ namespace GotTalent_API.Controllers
         public async Task<IActionResult> GetRankings()
         {
             List<Ranking> rankingList = new List<Ranking>();
-            var topRankings = RedisUtil.GetTopRankings(0, 4);
+            var topRankings = RedisUtil.GetTopRankings(0, 9);
             foreach (var item in topRankings)
             {
                 Ranking ranking = new Ranking();
@@ -45,7 +45,6 @@ namespace GotTalent_API.Controllers
                 ranking.total_playtime = gameResult.total_playtime;
 
                 var stageLog = await _context.StageLog.FirstOrDefaultAsync(x => x.game_id == item.game_id);
-                //ranking.photoURL = S3Util.GetPresignedURL(this.S3Client, bucketName, stageLog.file_loc);
 
                 rankingList.Add(ranking);
             }
@@ -53,12 +52,12 @@ namespace GotTalent_API.Controllers
             return Ok(rankingList);
         }
 
-        // GET api/rankings/happy
-        [HttpGet("{action_type}")]
-        public async Task<IActionResult> GetRankingsByType(string action_type)
+        // GET api/rankings/5
+        [HttpGet("{game_id}")]
+        public int GetRankingsByGameId(int game_id)
         {
-            // var value = await _context.RankingByType.Select(x => x.action_type == action_type).ToListAsync();
-            return Ok();
+            int total_rank = RedisUtil.GetGameRanking(game_id) + 1;
+            return total_rank;
         }
 
         // POST api/rankings

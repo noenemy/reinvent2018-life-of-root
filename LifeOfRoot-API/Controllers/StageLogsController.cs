@@ -125,6 +125,8 @@ namespace GotTalent_API.Controllers
             _context.GameResult.Update(gameResult);
             await _context.SaveChangesAsync();
 
+            RedisUtil.AddGameResultToRedis(gameResult);
+
             return Ok(dto.game_id);     
         }
 

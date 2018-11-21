@@ -13,19 +13,17 @@
         <table class="table">
           <tr class="thead-light">
             <th>Ranking</th>
-            <th></th>            
             <th>Name</th>
-            <th></th>
+            <th>Found Objects</th>
+            <th>Total Playtime</th>
             <th>Total Score</th>
-            <th>Grade</th>
           </tr>
           <tr *ngFor="let ranking of rankings">
             <td><kbd>{{ ranking.total_rank }}</kbd></td>
-            <td><img src="{{ ranking.photoURL }}" width="50px" height="50px"></td>
             <td>{{ ranking.name }}</td>
-            <td>{{ ranking.gender }}({{ ranking.age }})</td>
-            <td>{{ ranking.total_score | number }}</td>
-            <td>{{ ranking.grade }}</td>
+            <td>{{ ranking.total_found_objects }}</td>
+            <td>{{ ranking.total_playtime }}"</td>
+            <td>{{ ranking.total_score }}</td>
           </tr>
         </table>
       </div>
