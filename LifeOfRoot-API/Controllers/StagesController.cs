@@ -99,6 +99,61 @@ namespace GotTalent_API.Controllers
 
             return Ok(stageInfo);
         }
+
+        // POST api/stages
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] StagePostImageDTO dto)
+        {
+            //Console.WriteLine("PostImage entered.");
+            
+            StageScoreDTO stageScore = new StageScoreDTO();
+            stageScore.game_id = dto.game_id;
+            stageScore.stage_id = dto.stage_id;
+            
+            Guid g = Guid.NewGuid();
+            string guidString = Convert.ToBase64String(g.ToByteArray());
+            guidString = guidString.Replace("=","");
+            guidString = guidString.Replace("+","");
+            guidString = guidString.Replace("/","");
+            
+            // Retrieving image data
+            byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
+            if (imageByteArray.Length == 0)
+                return BadRequest("Image length is 0.");
+            
+            bool found = false;
+            using (MemoryStream ms = new MemoryStream(imageByteArray))
+            {
+                // call Rekonition API
+                List<Label> labels = await RekognitionUtil.GetObjectDetailFromStream(this.RekognitionClient, ms); 
+                List<string> labelNames = new List<string>();
+                foreach (Label label in labels)
+                {
+                    labelNames.Add(label.Name);
+                    Console.Write(label.Name + " ");
+                }
+                var matchedObject = _context.StageObject.Where(x => x.game_id == dto.game_id && 
+                                        x.stage_id == dto.stage_id &&
+                                        x.found_yn == "N" &&
+                                        labelNames.Contains(x.object_name)).FirstOrDefault();
+                if (matchedObject != null)
+                {
+                    //Console.WriteLine("Matched object: " + matchedObject.object_name);
+                    stageScore.object_name = matchedObject.object_name;
+                    stageScore.object_score = matchedObject.object_score;
+                    matchedObject.found_yn = "Y";
+
+                    _context.StageObject.Update(matchedObject);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    Console.WriteLine("no matched object");
+                }
+            }
+            
+            return Ok(stageScore);            
+        }  
     
         private List<string> GetRandomStageObjectList(int difficulty, int objectCount)
         {
