@@ -11,7 +11,6 @@ namespace GotTalent_API.Data
         public DbSet<Object> Object { get; set; }
         public DbSet<StageObject> StageObject { get; set; }
         public DbSet<Game> Game { get; set; }
-        public DbSet<Feedback> Feedback { get; set; }
         public DbSet<GameResult> GameResult { get; set; }
         public DbSet<TestPicture> TestPicture { get; set; }
         public DbSet<TestPictureLabel> TestPictureLabel { get; set; }
