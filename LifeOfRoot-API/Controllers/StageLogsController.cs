@@ -69,6 +69,21 @@ namespace GotTalent_API.Controllers
             var value = _context.StageLog.Add(newStageLog);
             await _context.SaveChangesAsync();  
 
+            var gameResult = _context.GameResult.Where(x => x.game_id == dto.game_id).FirstOrDefault();
+            if (gameResult == null)
+            {
+                GameResult newGameResult = new GameResult{
+                    game_id = dto.game_id,
+                    total_score = 0,
+                    total_rank = 0,
+                    total_found_objects = 0,
+                    total_playtime = 0
+                };
+
+                _context.GameResult.Add(newGameResult);
+                await _context.SaveChangesAsync();  
+            }
+
             return Ok(dto.game_id);            
         }
 
@@ -81,7 +96,7 @@ namespace GotTalent_API.Controllers
             var stageLog = _context.StageLog.Where(x => x.game_id == dto.game_id && x.stage_id == dto.stage_id).FirstOrDefault();
             if (stageLog == null)
             {
-                return NotFound();
+                return NotFound("StageLog not found.");
             }
 
             stageLog.objects_score = dto.objects_score;
@@ -93,7 +108,22 @@ namespace GotTalent_API.Controllers
             stageLog.end_date = DateTime.Now;
 
             var value = _context.StageLog.Update(stageLog);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
+
+            int playtime = (int)(stageLog.end_date - stageLog.start_date)?.TotalSeconds;
+            Console.WriteLine("span: " + playtime.ToString());
+
+            var gameResult = _context.GameResult.Where(x => x.game_id == dto.game_id).FirstOrDefault();
+            if (gameResult == null)
+            {
+                return NotFound("GameResult not found.");
+            }
+
+            gameResult.total_score += dto.total_score;
+            gameResult.total_found_objects += dto.found_objects;
+            gameResult.total_playtime += playtime;
+            _context.GameResult.Update(gameResult);
+            await _context.SaveChangesAsync();
 
             return Ok(dto.game_id);     
         }

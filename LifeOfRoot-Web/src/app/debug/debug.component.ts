@@ -75,7 +75,7 @@ export class DebugComponent implements OnInit {
   }
 
   getGameResultColumns(): string[] {
-    return ['game_id', 'result_page_url', 'total_score', 'total_rank', 'cast_result', 'grade_result', 'gender_result', 'age_result'];
+    return ['game_id', 'total_score', 'total_rank', 'total_found_objects', 'total_playtime'];
   }
 
   getGameColumns(): string[] {

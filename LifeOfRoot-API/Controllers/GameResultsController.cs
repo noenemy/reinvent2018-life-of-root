@@ -74,16 +74,11 @@ namespace GotTalent_API.Controllers
                 gradeResult = "Supporting";
             else
                 gradeResult = "Leading";
-            
-            // casting randomly
-            // int randomRecord = new Random().Next() % _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Count();;
-            //var castResult = _context.Cast.Where(x => x.gender == genderResult && x.grade == gradeResult).Skip(randomRecord).Take(1).First();
-            string resultPageUrl = "TBD";
+
 
             // Database update
             GameResult newGameResult = new GameResult{
                 game_id = game_id,
-                result_page_url = resultPageUrl,
                 total_score = totalScore,
                 total_rank = 0,
                 total_found_objects = 12,

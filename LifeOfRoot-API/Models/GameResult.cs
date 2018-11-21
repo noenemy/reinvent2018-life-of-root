@@ -9,7 +9,6 @@ namespace GotTalent_API.Models
     {
         [Key]
         public int game_id { get; set; }
-        public string result_page_url { get; set; }
         public int total_score { get; set; }
         public int total_rank { get; set; }
         public int total_found_objects { get; set; }

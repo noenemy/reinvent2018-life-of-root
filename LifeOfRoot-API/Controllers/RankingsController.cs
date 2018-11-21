@@ -28,8 +28,6 @@ namespace GotTalent_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetRankings()
         {
-            string bucketName = "reinvent-gottalent";
-
             List<Ranking> rankingList = new List<Ranking>();
             var topRankings = RedisUtil.GetTopRankings(0, 4);
             foreach (var item in topRankings)

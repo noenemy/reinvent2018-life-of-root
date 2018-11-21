@@ -210,6 +210,7 @@ export class GameStageComponent implements OnInit {
     const stageLog = {
       game_id: this.game_id,
       stage_id: this.stage_id,
+      found_objects: this.found_object_count,
       objects_score: this.objects_score,
       time_score: this.time_score,
       clear_score: this.clear_score,

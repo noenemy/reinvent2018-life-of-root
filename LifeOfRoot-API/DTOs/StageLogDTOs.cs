@@ -12,6 +12,7 @@ namespace GotTalent_API.DTOs
     {
         public int game_id { get; set; }
         public int stage_id { get; set; }
+        public int found_objects { get; set; }
         public int objects_score { get; set; }
         public int time_score { get; set; }
         public int clear_score { get; set; }
