@@ -155,21 +155,15 @@ CREATE TABLE tb_stage_log
 CREATE TABLE tb_game_result
 (
   game_id INT NOT NULL,
-  result_page_url VARCHAR(2083),
-  total_score DOUBLE,
+  name VARCHAR(100),
+  total_score INT,
   total_rank BIGINT,
-  cast_result INT,
-  grade_result VARCHAR(2),
-  gender_result VARCHAR(10),
-  age_result TINYINT,
+  total_found_objects INT,
+  total_playtime INT,
   PRIMARY KEY(game_id),
   FOREIGN KEY(game_id) 
     REFERENCES tb_game(game_id)
     ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  FOREIGN KEY(cast_result)
-    REFERENCES tb_cast(cast_id)
-    ON DELETE CASCADE
     ON UPDATE RESTRICT
 ) DEFAULT CHARSET=utf8;
 
