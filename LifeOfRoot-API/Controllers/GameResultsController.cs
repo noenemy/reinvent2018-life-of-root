@@ -41,64 +41,6 @@ namespace GotTalent_API.Controllers
             return Ok(value);
         }
 
-        // POST api/gameresults/5/calc
-        [HttpGet("{game_id}/calc")]
-        public async Task<IActionResult> CalcGameResult(int game_id)
-        {
-            string bucketName = "reinvent-gottalent";
-
-            var stageLogs = await _context.StageLog.Where(x => x.game_id == game_id).ToListAsync();
-            int totalScore = 0;
-            string genderResult = "";
-            string gradeResult = "";
-            List<string> signedURLs = new List<string>();
-            int ageResult = 0;
-            // foreach (var stageLog in stageLogs)
-            // {
-            //     if (stageLog.action_type == "Profile")
-            //     {
-            //         genderResult = stageLog.gender;
-            //         ageResult = stageLog.age;
-            //     }
-            //     else
-            //     {
-            //         totalScore += stageLog.score;
-            //         signedURLs.Add(S3Util.GetPresignedURL(this.S3Client, bucketName, stageLog.file_loc));
-            //     }
-            // }
-
-            // TODO : need to use Cache service for judgement
-            if (totalScore < 160)
-                gradeResult = "Extra";
-            else if (160 <= totalScore && totalScore < 190)
-                gradeResult = "Supporting";
-            else
-                gradeResult = "Leading";
-
-
-            // Database update
-            GameResult newGameResult = new GameResult{
-                game_id = game_id,
-                total_score = totalScore,
-                total_rank = 0,
-                total_found_objects = 12,
-                total_playtime = 120
-            };
-
-            Game game = await _context.Game.Where(x => x.game_id == game_id).FirstOrDefaultAsync();
-            game.end_date = DateTime.Now;
-
-            var value = _context.GameResult.Add(newGameResult);
-            await _context.SaveChangesAsync();
-
-            RedisUtil.AddGameResultToRedis(newGameResult);
-            newGameResult.total_rank = RedisUtil.GetGameRanking(newGameResult.game_id) + 1;
-
-            //return Ok(new {newGameResult, castResult.actor, castResult.title, signedURLs});
-            return Ok(new {newGameResult, signedURLs});
-        }
-
-
         // PUT api/gameresults/5
         [HttpPut("{game_id}")]
         public void Put(int game_id, [FromBody] string value)

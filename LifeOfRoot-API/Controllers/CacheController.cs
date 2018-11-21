@@ -24,32 +24,32 @@ namespace GotTalent_API.Controllers
 
         // GET api/cache/reload
         [HttpGet("reload")]
-        public async Task<IActionResult> ReloadCache()
+        public ActionResult<int> ReloadCache()
         {
             int gameResultCount = 0;
 
-            var games = await _context.Game.ToListAsync();
+            var games = _context.Game.ToList();
             foreach (Game game in games)
             {
-                var gameResults = await _context.GameResult.Where(x => x.game_id == game.game_id).ToListAsync();
+                var gameResults = _context.GameResult.Where(x => x.game_id == game.game_id).ToList();
                 foreach (GameResult gameResult in gameResults)
                 {
-                    Console.WriteLine("cache loading game result for game_id : " + game.game_id);
+                    //Console.WriteLine("cache loading game result for game_id : " + game.game_id);
                     RedisUtil.AddGameResultToRedis(gameResult);
                     gameResultCount++;
                 }
             }
-            return Ok(gameResultCount);
+            return gameResultCount;
         }
 
         // GET api/cache/clear
         [HttpGet("clear")]
-        public async Task<IActionResult> ClearCache()
+        public ActionResult<bool> ClearCache()
         {
             // TODO: need to test
             // RedisUtil.ClearAll();
 
-            return Ok();
+            return true;
         }
     }            
 }

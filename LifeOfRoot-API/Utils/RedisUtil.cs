@@ -56,7 +56,6 @@ namespace GotTalent_API.Utils
             List<GameResult> gameResultList = new List<GameResult>();
            for (int i=0; i < list.Length; i++)
            {
-               Console.WriteLine(list[i].Element + ":" + list[i].Score);
                GameResult item = gameResults[Convert.ToInt32(list[i].Element)];
                item.total_rank = i + 1;
                gameResultList.Add(item);

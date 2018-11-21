@@ -54,6 +54,12 @@ namespace GotTalent_API.Controllers
         {
             Console.WriteLine("stagelogs POST entered.");
 
+            var game = _context.Game.Where(x => x.game_id == dto.game_id).FirstOrDefault();
+            if (game == null)
+            {
+                return NotFound("Game not found. " + dto.game_id);
+            }
+
             // Add a stage log record
             StageLog newStageLog = new StageLog{
                     game_id = dto.game_id,
@@ -67,13 +73,14 @@ namespace GotTalent_API.Controllers
                     start_date = DateTime.Now 
                 };
             var value = _context.StageLog.Add(newStageLog);
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
 
             var gameResult = _context.GameResult.Where(x => x.game_id == dto.game_id).FirstOrDefault();
             if (gameResult == null)
             {
                 GameResult newGameResult = new GameResult{
                     game_id = dto.game_id,
+                    name = game.name,
                     total_score = 0,
                     total_rank = 0,
                     total_found_objects = 0,
@@ -111,7 +118,6 @@ namespace GotTalent_API.Controllers
             await _context.SaveChangesAsync();
 
             int playtime = (int)(stageLog.end_date - stageLog.start_date)?.TotalSeconds;
-            Console.WriteLine("span: " + playtime.ToString());
 
             var gameResult = _context.GameResult.Where(x => x.game_id == dto.game_id).FirstOrDefault();
             if (gameResult == null)

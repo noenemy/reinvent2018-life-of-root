@@ -26,30 +26,11 @@ namespace GotTalent_API.Controllers
 
         // GET api/rankings
         [HttpGet]
-        public async Task<IActionResult> GetRankings()
+        public ActionResult<List<GameResult>> GetRankings()
         {
-            List<Ranking> rankingList = new List<Ranking>();
             var topRankings = RedisUtil.GetTopRankings(0, 9);
-            foreach (var item in topRankings)
-            {
-                Ranking ranking = new Ranking();
-                ranking.total_rank = item.total_rank;
 
-                var game = await _context.Game.FirstOrDefaultAsync(x => x.game_id == item.game_id);
-                ranking.game_id = item.game_id;
-                ranking.name = game.name;
-
-                var gameResult = await _context.GameResult.FirstOrDefaultAsync(x => x.game_id == item.game_id);
-                ranking.total_score = gameResult.total_score;
-                ranking.total_found_objects = gameResult.total_found_objects;
-                ranking.total_playtime = gameResult.total_playtime;
-
-                var stageLog = await _context.StageLog.FirstOrDefaultAsync(x => x.game_id == item.game_id);
-
-                rankingList.Add(ranking);
-            }
-
-            return Ok(rankingList);
+            return topRankings;
         }
 
         // GET api/rankings/5
