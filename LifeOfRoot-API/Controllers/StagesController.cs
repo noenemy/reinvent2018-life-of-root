@@ -120,8 +120,7 @@ namespace GotTalent_API.Controllers
             byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
             if (imageByteArray.Length == 0)
                 return BadRequest("Image length is 0.");
-            
-            bool found = false;
+
             using (MemoryStream ms = new MemoryStream(imageByteArray))
             {
                 // call Rekonition API
