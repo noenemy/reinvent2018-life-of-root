@@ -100,18 +100,18 @@
 </div>
 
 <!-- object list -->
-<div class="row">
-  <div class="container-fluid object-list mr-5 ml-5">
-    <div class="col-2"></div>
-    <div class="col-8">
+<div class="row text-center">
+  <div class="container object-list">
+    <div class="col-1"></div>
+    <div class="col-10">
       <div>
       <h3>Found : {{ found_object_count }} / {{ total_object_count }}</h3>
       </div>
-      <div class="container-fluid" *ngIf="displayObjectList">
+      <div class="container-fluid text-center" *ngIf="displayObjectList">
           <button *ngFor="let object of objects" id="{{object}}" type="button" class="btn btn-warning btn-lg mr-4 mt-4 object-font">{{ object }}</button>
       </div> 
     </div>
-    <div class="col-2"></div>
+    <div class="col-1"></div>
   </div>
 </div>
 
