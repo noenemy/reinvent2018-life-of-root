@@ -1,5 +1,5 @@
 <br>
-<h1 class="text-secondary text-center">Test mode</h1>
+<h1 class="text-secondary text-center">Object Detection Test</h1>
 <br>
 
 <div class="container">
@@ -16,7 +16,7 @@
 
           <br/>
           <button class="btn btn-primary mr-2" (click)="triggerSnapshot();">Take A Snapshot</button>
-          <button class="btn btn-secondary" (click)="toggleWebcam();">Toggle Webcam</button>
+          <!-- <button class="btn btn-secondary" (click)="toggleWebcam();">Toggle Webcam</button> -->
           <br/>
 
       </div>
@@ -24,8 +24,7 @@
 
     <div class="col-4" *ngIf="labels">
       <div>
-        <h5>picture_id : {{ picture.picture_id }}</h5>
-        <h5>file_loc : {{ picture.file_loc }}</h5>
+        <h5>Found objects : </h5>
       </div>
       <div class="container">
         <table class="table">

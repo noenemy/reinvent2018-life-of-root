@@ -28,4 +28,8 @@ export class StageService {
   uploadPicture(stage_object): Observable<Stagescore> {
     return this.http.post<Stagescore>(this.baseUrl + 'stages', stage_object);
   }
+
+  uploadTest(body): Observable<any> {
+    return this.http.post(this.baseUrl + 'testpictures', body);
+  }
 }

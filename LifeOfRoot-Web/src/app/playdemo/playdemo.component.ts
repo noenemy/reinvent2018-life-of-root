@@ -4,6 +4,7 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers, Response, RequestOptions } from '@angular/http';
 import { AlertifyService } from '../_services/alertify.service';
+import { StageService } from '../_services/stage.service';
 
 @Component({
   selector: 'app-playdemo',
@@ -25,6 +26,7 @@ export class PlaydemoComponent implements OnInit {
   public errors: WebcamInitError[] = [];
 
   constructor(private http:HttpClient,
+    private stageService: StageService,
     private alertify: AlertifyService) { }
 
   // latest snapshot
@@ -81,21 +83,21 @@ export class PlaydemoComponent implements OnInit {
   }
 
   public postImage() {
-    const headers = new HttpHeaders();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
 
     const body = {
       base64Image: this.webcamImage.imageAsBase64
     };
 
-    this.http.post('http://localhost:5000/api/testpictures', body, { headers })
-        .subscribe(response => {
-          this.alertify.success('Successfully uploaded!');
-          //this.picture = demoresult.newTestPicture;
-          this.labels = response;
-      }, error => {
-        this.alertify.error('Something went wrong!');
-      });
+    this.alertify.message('Now working on it...');
+
+    this.stageService.uploadTest(body).subscribe(response => {
+
+      this.alertify.success('Recognition success.');
+      this.labels = response;
+
+    }, error => {
+      this.alertify.error('Something wrong. Try again.');
+    });
+
   }
 }

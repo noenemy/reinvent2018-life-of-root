@@ -65,9 +65,6 @@ namespace GotTalent_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TestPicturePostImageDTO dto)
         {
-            Console.WriteLine("PostImage entered.");
-
-            string bucketName = "reinvent-lifeofroot";
             List<Label> labels = null;
 
             Guid g = Guid.NewGuid();
@@ -77,7 +74,6 @@ namespace GotTalent_API.Controllers
             guidString = guidString.Replace("/","");
 
             // Retrieving image data
-            // ex: test/guid.jpg
             string keyName = string.Format("test/{0}.jpg", guidString);
             byte[] imageByteArray = Convert.FromBase64String(dto.base64Image);
             if (imageByteArray.Length == 0)
@@ -111,7 +107,7 @@ namespace GotTalent_API.Controllers
                 }
                 
                 // Upload image to S3 bucket
-                await Task.Run(() => S3Util.UploadToS3(this.S3Client, bucketName, keyName, ms));
+                // await Task.Run(() => S3Util.UploadToS3(this.S3Client, "S3_BUCKET_NAME_HERE", "KEY_NAME_HERE", ms));
             }
             
             return Ok(labels);            
