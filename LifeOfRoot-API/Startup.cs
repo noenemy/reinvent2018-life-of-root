@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using GotTalent_API.Utils;
 
 namespace GotTalent_API
 {
@@ -25,6 +26,8 @@ namespace GotTalent_API
         {
             string connectionString = Helpers.GetRDSConnectionString(this.Configuration);
             services.AddDbContext<DataContext>(x => x.UseMySql(connectionString));
+
+            RedisUtil.REDIS_SERVERNAME = Helpers.GetRedisHostname(this.Configuration);
 
             services.AddDefaultAWSOptions(this.Configuration.GetAWSOptions());
             services.AddAWSService<IAmazonS3>();

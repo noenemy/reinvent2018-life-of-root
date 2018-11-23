@@ -8,12 +8,21 @@ namespace GotTalent_API.Utils
 {
     public class RedisUtil
     {
-        static string REDIS_SERVERNAME = "localhost";
-        static ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(REDIS_SERVERNAME);
+        public static string REDIS_SERVERNAME = "localhost";
+        static ConnectionMultiplexer redis = null;
+
+        private static IDatabase GetRedisDatabase()
+        {
+            if (redis == null)
+                redis = ConnectionMultiplexer.Connect(REDIS_SERVERNAME);
+
+            IDatabase db = redis.GetDatabase(); 
+            return db;
+        }
 
         public static void AddGameResultToRedis(GameResult gameResult)
         {
-            IDatabase db = redis.GetDatabase();
+            IDatabase db = GetRedisDatabase();
 
             var gameResults = new RedisDictionary<int, GameResult>("gameResults");
             gameResults.Add(gameResult.game_id, gameResult);
@@ -23,7 +32,7 @@ namespace GotTalent_API.Utils
 
         public static void AddGameResultListToRedis(List<GameResult> gameResultList)
         {
-            IDatabase db = redis.GetDatabase();
+            IDatabase db = GetRedisDatabase();
 
             var gameResults = new RedisDictionary<int, GameResult>("gameResults");
             foreach (GameResult item in gameResultList)
@@ -36,7 +45,8 @@ namespace GotTalent_API.Utils
         public static int GetGameRanking(int game_id)
         {
             int result = 0;
-            IDatabase db = redis.GetDatabase();
+
+            IDatabase db = GetRedisDatabase();
 
             long? rank = db.SortedSetRank("leaderboard", game_id, Order.Descending);
 
@@ -48,7 +58,7 @@ namespace GotTalent_API.Utils
 
         public static List<GameResult> GetTopRankings(int start, int stop)
         {
-           IDatabase db = redis.GetDatabase();
+           IDatabase db = GetRedisDatabase();
 
            SortedSetEntry[] list = db.SortedSetRangeByRankWithScores("leaderboard", start, stop, Order.Descending);
 
@@ -65,6 +75,9 @@ namespace GotTalent_API.Utils
 
         public static void ClearAll()
         {
+            if (redis == null)
+                redis = ConnectionMultiplexer.Connect(REDIS_SERVERNAME);
+
             var server = redis.GetServer(REDIS_SERVERNAME);
             server.FlushAllDatabases();
         }

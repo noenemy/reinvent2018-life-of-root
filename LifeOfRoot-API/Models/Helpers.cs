@@ -18,5 +18,12 @@ namespace GotTalent_API.Models
 
             return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";";
         }
+
+        public static string GetRedisHostname(IConfiguration configuration)
+        {
+            string hostname = configuration.GetSection("ElastiCache").GetValue("REDIS_HOST_NAME", "localhost");
+
+            return hostname;
+        }
     }
 }
