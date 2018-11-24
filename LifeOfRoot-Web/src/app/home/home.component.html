@@ -1,9 +1,7 @@
-<div class="jumbotron jumbotron-fluid">
+<!-- <div class="jumbotron jumbotron-fluid">
 
     <video autoplay muted loop>    
         <source src="../../assets/videos/gottalent-splash.mp4" type="video/mp4">
-        <!-- <source src="" data-src="//clips.vorwaerts-gmbh.de/big_buck_bunny.webm" type="video/webm">
-        <source src="" data-src="//clips.vorwaerts-gmbh.de/big_buck_bunny.ogv" type="video/ogg"> -->
     </video>
     
       <div class="container text-white">
@@ -25,6 +23,102 @@
         </button>
 
       </div>
-      <!-- /.container -->
+    </div> -->
+
+    <div class="jumbotron jumbotron-fluid" id="banner" style="background-image: url(../../assets/images/background/bg-ocean-1.jpeg);">
+        <div class="container text-center text-md-left">
+            <header>
+                <div class="row justify-content-between">
+                    <div class="col-4">
+                    </div>
+                    <div class="col-6 align-self-center text-right">
+                        <img src="../../assets/images/builders_logo.jpg" alt="logo">
+                    </div>
+                </div>
+            </header>
+            <h1 data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="display-3 text-white font-weight-bold my-5">
+                Welcome to<br>
+            	Life of √(Square Root)!
+            </h1>
+            <p data-aos="fade" data-aos-easing="linear" data-aos-duration="1000" data-aos-once="true" class="lead text-white my-4">
+                A casual game using Amazon Rekognition object detection API
+            </p>
+            <br>
+            <button class="btn btn-primary btn-lg" aria-label="Left" (click)="playGame()">
+                <fa name="play-circle"></fa> Get Started
+            </button>
+        </div>
+    </div>    
+
+    <!-- three-block -->
+    <div class="container my-5 py-2">
+        <h2 class="text-center font-weight-bold my-5">Project Abstract</h2>
+        <div class="row text-center">
+            <div>
+                <h4>Life of √(Square Root) is a game challenges players on their reaction.</h4>
+                <h4>The game will simply show a word and the player will pick a card with picture of the word with given time. More card the player picks, it will be better score.</h4>
+                    
+                <h5>The demo leverages AngularJs, .Net core, Amazon S3, Amazon RDS, Amazon ElastiCache and other AWS services.</h5>
+                <br>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-once="true" class="col-md-4 text-center">
+                <img src="../../assets/images/angular_logo.jpg" alt="AngularJS" height="120" class="mx-auto">
+                <br>
+                <h4>AngularJS</h4>
+                <p>Web Front-end framework</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" data-aos-once="true" class="col-md-4 text-center">
+                <img src="../../assets/images/dotnet_core_logo.png" alt=".NET Core" height="120" class="mx-auto">
+                <br>
+                <h4>.NET Core</h4>
+                <p>Middle-tier API service</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-once="true" class="col-md-4 text-center">
+                <img src="../../assets/images/rekognition-logo.jpg" alt="Amazon Rekognition" height="120" class="mx-auto">
+                <br>
+                <h4>Amazon Rekognition</h4>
+                <p>Image recognition and Object detection</p>
+            </div>
+        </div>
     </div>
-    <!-- /.jumbotron -->
+
+    <!-- feature (skew background) -->
+    <div class="jumbotron jumbotron-fluid feature" id="feature-first">
+        <div class="container my-5">
+            <div class="row justify-content-between text-center text-md-left">
+                <div data-aos="fade-right" data-aos-duration="1000" data-aos-once="true" class="col-md-6">
+                    <h2 class="font-weight-bold">Amazon Rekognition</h2>
+                    <p class="my-4">With Amazon Rekognition, you can identify thousands of objects (e.g. bike, telephone, building) and scenes (e.g. parking lot, beach, city). When analyzing video, you can also identify specific activities happening in the frame, such as "delivering a package" or "playing soccer".</p>
+                    <a href="#" class="btn my-4 font-weight-bold atlas-cta cta-blue">Learn More</a>
+                </div>
+                <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true" class="col-md-6 align-self-center">
+                    <img src="../../assets/images/label-detection-sample.png" width="600" alt="label detection" class="mx-auto d-block">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meet the team -->
+    <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+
+                <h2 class="text-center font-weight-bold">Meet the Team</h2>
+                <div class="row">
+                    <div class="col-sm-4 col-md-2 py-2 align-self-center">
+                        <img src="img/client-1.png" class="mx-auto d-block">
+                    </div>
+                    <div class="col-sm-4 col-md-2 py-2 align-self-center">
+                        <img src="img/client-2.png" class="mx-auto d-block">
+                    </div>
+                    <div class="col-sm-4 col-md-2 py-2 align-self-center">
+                        <img src="img/client-3.png" class="mx-auto d-block">
+                    </div>
+                    <div class="col-sm-4 col-md-2 py-2 align-self-center">
+                        <img src="img/client-4.png" class="mx-auto d-block">
+                    </div>
+                    <div class="col-sm-4 col-md-2 py-2 align-self-center">
+                        <img src="img/client-5.png" class="mx-auto d-block">
+                    </div>
+                </div>
+            </div>
+        </div>

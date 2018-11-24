@@ -18,3 +18,16 @@
     position: relative;
   }
   
+  /********** feature (skew background) **********/
+.feature img {
+  width: 100%;
+  max-width: 480px;
+}
+
+#feature-first {
+  background: linear-gradient(168deg, #ffffff 55%, #00FFAD 0);
+}
+
+#feature-last {
+  background: #00FFAD;
+}
