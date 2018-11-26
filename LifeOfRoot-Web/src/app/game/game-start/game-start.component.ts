@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { GameService } from '../../_services/game.service';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
