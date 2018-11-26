@@ -12,6 +12,5 @@ export const appRoutes: Routes = [
     { path: 'game', component: GameComponent },
     { path: 'playdemo', component: PlaydemoComponent },
     { path: 'debug', component: DebugComponent },
-    { path: 'aboutus', component: AboutusComponent },
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
