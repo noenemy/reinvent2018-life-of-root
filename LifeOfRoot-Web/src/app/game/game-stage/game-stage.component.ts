@@ -24,6 +24,7 @@ export class GameStageComponent implements OnInit {
 
   // stage info
   public difficulty: string = '';
+  public message: string = '';
 
   // score info
   public objects_score: number;
@@ -40,6 +41,7 @@ export class GameStageComponent implements OnInit {
   
   // game status info
   public gameStarted: boolean = false;
+  public isWaiting: boolean = false;
 
   // display control flags
   public displayStageStartModal = 'none';
@@ -86,6 +88,7 @@ export class GameStageComponent implements OnInit {
     // start game
     this.displayStageStartModal = 'none';
     this.displayObjectList = true;
+    this.isWaiting = false;
     this.gameStarted = true;
 
     this.addStageLog();
@@ -140,7 +143,12 @@ export class GameStageComponent implements OnInit {
 
   public uploadPicture() {
 
-    this.alertify.message('Now working on it...');
+    // avoid duplicated processing
+    if (this.isWaiting == true) return;
+
+    this.message = '';
+    this.isWaiting = true;
+    this.alertify.message('Working on it...');
 
     const pictureInfo = {
       game_id: this.game_id,
@@ -149,6 +157,8 @@ export class GameStageComponent implements OnInit {
     };
 
     this.stageService.uploadPicture(pictureInfo).subscribe((stageScore: Stagescore) => {
+
+      this.isWaiting = false;
 
       let element: HTMLElement = document.getElementById(stageScore.object_name) as HTMLElement;
       if (element) {
@@ -160,7 +170,7 @@ export class GameStageComponent implements OnInit {
         this.total_score += stageScore.object_score;
         this.found_object_count++;
 
-        this.alertify.success('Great!');
+        this.message = "Great!";
         if (this.found_object_count == this.total_object_count)
         {
           this.clearTimer();
@@ -171,8 +181,6 @@ export class GameStageComponent implements OnInit {
           this.total_score += this.time_score;
           this.stage_score = this.objects_score + this.clear_score + this.time_score;
           this.stage_completed = "Y";
-
-          this.alertify.success('You found all objects!');
           
           this.updateStageLog();
 
@@ -183,10 +191,11 @@ export class GameStageComponent implements OnInit {
       } else {
         this.audioNotFound.play();
 
-        this.alertify.warning('Not found!');
+        this.message = "Try again!";
       }
 
     }, error => {
+      this.isWaiting = false;
       this.alertify.error('Something wrong. Try again.');
     });
   }
@@ -247,6 +256,8 @@ export class GameStageComponent implements OnInit {
       if (this.seconds ===0 || this.seconds < 0) {
         this.clearTimer();
         this.seconds = 0;
+
+        this.isWaiting = false;
 
         this.clear_score = 0;
         this.time_score = 0;
