@@ -1,0 +1,23 @@
+#holder {
+    min-height: 100%;
+    position:relative;
+}
+
+ul.footer {
+    margin-top: 10px;
+    text-align: right;
+    margin-bottom: 0;
+}
+
+ul.footer li {
+    color: #333;
+    display: inline-block;
+}
+
+#footer {
+    /* bottom: -50px;
+    height: 50px; */
+    left: 0;
+    position: absolute;
+    right: 0;
+}
