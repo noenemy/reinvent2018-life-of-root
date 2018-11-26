@@ -125,7 +125,7 @@ namespace GotTalent_API.Controllers
                 return NotFound("GameResult not found.");
             }
 
-            gameResult.total_score += dto.total_score;
+            gameResult.total_score = dto.total_score;
             gameResult.total_found_objects += dto.found_objects;
             gameResult.total_playtime += playtime;
             _context.GameResult.Update(gameResult);
