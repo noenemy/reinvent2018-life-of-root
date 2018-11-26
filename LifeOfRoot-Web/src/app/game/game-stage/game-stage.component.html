@@ -52,7 +52,7 @@
                 <br/>
                 <button id="buttonSnapshot" class="btn btn-primary btn-lg mr-2" 
                   (click)="triggerSnapshot();" *ngIf="gameStarted">
-                  <fa name="camera"></fa> Take A Snapshot
+                  <fa name="camera"></fa> Press "BIG ENTER"
                 </button>
                 <!-- <button class="btn btn-secondary btn-lg" (click)="toggleWebcam();" *ngIf="action_type!='NoMoreAction'">
                   <fa name="toggle-on"></fa> Toggle Webcam
@@ -69,7 +69,7 @@
                   <img class="card-img-top" [src]="webcamImage.imageAsDataUrl" alt="Card image cap">
                   <div class="card-body" style="height:130px">
                     <h3 class="card-title text-center" *ngIf="isWaiting">Working on it...</h3>
-                    <h1 class="card-text text-center display-4">{{ message }}</h1>
+                    <h1 class="card-text text-center display-4" *ngIf="gameStarted">{{ message }}</h1>
                   </div>
                 </div>
                 <br/>
@@ -104,24 +104,23 @@
 
 <!-- Modal : modalStageStart -->
 <div class="modal" id="modalStageStart" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageStartModal}">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalStageStart">Ready</h5>
+        <h2 class="modal-title" id="modalStageStart" class="display-3">Stage {{ stage_id }}</h2>
         <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onStageStart()">
           <span aria-hidden="true">&times;</span>
         </button> -->
       </div>
       <div class="modal-body">
-        <h3>Rescue your objects. Are you ready?</h3>
+        <h2 class="display-5">Find {{ objects.length }} image cards in {{ seconds }} seconds.</h2>
         <br>
-        <div>Stage : {{ stage_id }}</div>
         <div>Difficulty : {{ difficulty }}</div>
-        <div>Time : {{ seconds }}</div>
-        <div>Objects : {{ objects.length }}</div>
+        <br>
+        <h1 class="display-1 text-primary text-bold text-center">{{ modal_timer }}</h1>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button> -->
       </div>
     </div>
   </div>
@@ -129,16 +128,14 @@
 
 <!-- Modal : modalStageClear -->
 <div class="modal" id="modalStageClear" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageClearModal}">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalStageStart">Stage Result</h5>
+        <h2 class="modal-title" id="modalStageStart" class="display-3">STAGE CLEAR</h2>
       </div>
       <div class="modal-body">
-        <h3>STAGE CLEAR</h3>
+        <h2 class="display-5">You found {{ found_object_count }} image cards.</h2>
         <br>
-        <div>Stage : {{ stage_id }}</div>
-        <div>Found objects : {{ found_object_count }}</div>        
         <div>Found Score : {{ objects_score }}</div>
         <div>Clear Bonus : {{ clear_score }}</div>
         <div>Time Bonus : {{ time_score }}</div>
@@ -146,7 +143,7 @@
         <div>Total Score : {{ total_score }}</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onStageEnd()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="onStageEnd()">O K</button>
       </div>
     </div>
   </div>
@@ -154,16 +151,14 @@
 
 <!-- Modal : modalStageFailed -->
 <div class="modal" id="modalStageFailed" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStageFailedModal}">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalStageStart">Stage Result</h5>
+        <h2 class="modal-title" id="modalStageStart" class="display-3">TIME IS OVER</h2>
       </div>
       <div class="modal-body">
-        <h3>STAGE FAILED</h3>
+        <h2 class="display-5">You found {{ found_object_count }} image cards.</h2>
         <br>
-        <div>Stage : {{ stage_id }}</div>
-        <div>Found objects : {{ found_object_count }}</div>
         <div>Found Score : {{ objects_score }}</div>
         <div>Stage Score : {{ stage_score }}</div>
         <div>Total Score : {{ total_score }}</div>

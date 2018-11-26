@@ -25,6 +25,7 @@ export class GameStageComponent implements OnInit {
   // stage info
   public difficulty: string = '';
   public message: string = '';
+  public modal_timer: number;
 
   // score info
   public objects_score: number;
@@ -138,6 +139,18 @@ export class GameStageComponent implements OnInit {
 
       // show start modal dialog
       this.displayStageStartModal = 'block';
+      this.modal_timer = 4;
+      this.intervalId = window.setInterval(() => {
+        this.modal_timer -= 1;
+  
+        if (this.modal_timer ===0 || this.modal_timer < 0) {
+          
+          clearInterval(this.intervalId);
+          this.modal_timer = 0;
+          this.onStageStart();
+        }
+      }, 1000);
+
     })
   }
 
@@ -174,6 +187,7 @@ export class GameStageComponent implements OnInit {
         if (this.found_object_count == this.total_object_count)
         {
           this.clearTimer();
+          this.gameStarted = false;
           
           this.clear_score = this.stage_id * 300;
           this.time_score = Math.round(this.seconds * 100);
@@ -258,6 +272,7 @@ export class GameStageComponent implements OnInit {
         this.seconds = 0;
 
         this.isWaiting = false;
+        this.gameStarted = false;
 
         this.clear_score = 0;
         this.time_score = 0;
