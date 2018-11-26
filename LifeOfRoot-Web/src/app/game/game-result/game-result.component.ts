@@ -2,7 +2,8 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 import { AlertifyService } from '../../_services/alertify.service';
 import { GameResult } from '../../_models/gameresult';
 import { HttpClient } from '@angular/common/http';
-import { GameService } from '../../_services/game.service';
+import { GameResultService } from 'src/app/_services/gameresult.service';
+import { RankingService } from 'src/app/_services/ranking.service';
 
 @Component({
   selector: 'app-game-result',
@@ -10,33 +11,39 @@ import { GameService } from '../../_services/game.service';
   styleUrls: ['./game-result.component.css']
 })
 export class GameResultComponent implements OnInit {
-  @Input() stage: string;
   @Input() game_id: number;
   @Output() go = new EventEmitter<string>();
   game_result: GameResult;
+  game_ranking: number;
   constructor(private http: HttpClient,
-    private gameService: GameService,
+    private gameResultService: GameResultService,
+    private rankingService: RankingService,
     private alertify: AlertifyService) { }
 
   ngOnInit() {
-    this.calcGameResult();
+    this.getGameResult();
   }
 
-  public calcGameResult() {
+  public getGameResult() {
 
     this.alertify.message('Now working on it...');
 
-    this.gameService.calcGameResult(this.game_id).subscribe((gameResult: GameResult) => {
+    this.gameResultService.getGameResult(this.game_id).subscribe((gameResult: GameResult) => {
 
       this.alertify.success('Successfully uploaded!');
       this.game_result = gameResult;
-      //this.imageSignedURL = stageLogResult.file_loc;
+    }, error => {
+      this.alertify.error(error);
+    });
+
+    this.rankingService.get(this.game_id).subscribe(response => {
+      this.game_ranking = response;
     }, error => {
       this.alertify.error(error);
     });
   }
 
   gameStart() {
-    this.go.emit('splash');
+    this.go.emit('start');
   }
 }
