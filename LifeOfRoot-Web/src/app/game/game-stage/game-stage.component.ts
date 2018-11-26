@@ -115,7 +115,7 @@ export class GameStageComponent implements OnInit {
 
   gameEnd() {
     console.log('game end!');
-    this.stageCompleted.emit(this.stage_id);
+    this.stageCompleted.emit(0);
   }
 
   // ===============================================================================

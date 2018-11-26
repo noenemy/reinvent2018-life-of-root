@@ -13,7 +13,7 @@ export class GameComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.stage = 'splash';
+    this.stage = 'start';
     this.game_id = 0;
   }
 
@@ -44,15 +44,10 @@ export class GameComponent implements OnInit {
       case 3:
         this.message1 = 'When half of the population was gone, we all felt sad.';
         this.message2 = 'It is time to get your memories back. Show us the sad face.';
+
+        isGameCompleted = true;
         break;
-      case 4:
-        this.message1 = 'Imagine all the people are back from gone! How much would you be surprised!?';
-        this.message2 = 'Please show us the face expression if everyone really returns!';
-        break;
-      case 5:
-        this.message1 = 'Ok. Well done.';
-        this.message2 = 'Now time to see your result.';
-        break;
+        
       case 0:
         isGameCompleted = true;
         break;

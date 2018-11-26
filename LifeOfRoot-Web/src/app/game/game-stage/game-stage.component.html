@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
   <!-- stage info header  -->
-  <div class="row align-items-center mt-3">
+  <div class="row align-items-center mt-2 mb-2">
     <div class="col-2"></div>
     <div class="col-1 text-center">
       <h5>S T A G E</h5>
@@ -26,12 +26,10 @@
     <div class="col-1"></div>
   </div>
 
-  <br>
-
   <!-- game play screen -->
   <div class="row text-right">
     <div class="col-3">
-      <img src="../../../assets/images/judge/writing.jpeg">
+      <img src="../../../assets/images/root/playing.png" height="630">
     </div>
   
     <div class="col-9">
@@ -87,15 +85,15 @@
 </div>
 
 <!-- object list -->
-<div class="row text-center">
+<div class="row text-center mt-1">
   <div class="container object-list">
     <div class="col-1"></div>
     <div class="col-10">
       <div>
-      <h3>Please find the following objects. (Found : {{ found_object_count }} / {{ total_object_count }})</h3>
+      <h3>Please find the following picture cards. (Found : {{ found_object_count }} / {{ total_object_count }})</h3>
       </div>
       <div class="container-fluid text-center" *ngIf="displayObjectList">
-          <button *ngFor="let object of objects" id="{{object}}" type="button" class="btn btn-warning btn-lg mr-4 mt-4 object-font">{{ object }}</button>
+          <button *ngFor="let object of objects" id="{{object}}" type="button" class="btn btn-warning btn-lg mr-4 mb-1 object-font">{{ object }}</button>
       </div> 
     </div>
     <div class="col-1"></div>
@@ -108,19 +106,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" id="modalStageStart" class="display-3">Stage {{ stage_id }}</h2>
-        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onStageStart()">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
       </div>
       <div class="modal-body">
-        <h2 class="display-5">Find {{ objects.length }} image cards in {{ seconds }} seconds.</h2>
+        <h2 class="display-5">Find {{ objects.length }} picture cards in {{ seconds }} seconds.</h2>
         <br>
         <div>Difficulty : {{ difficulty }}</div>
         <br>
         <h1 class="display-1 text-primary text-bold text-center">{{ modal_timer }}</h1>
-      </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary" (click)="onStageStart()">Start</button> -->
       </div>
     </div>
   </div>
@@ -134,13 +126,21 @@
         <h2 class="modal-title" id="modalStageStart" class="display-3">STAGE CLEAR</h2>
       </div>
       <div class="modal-body">
-        <h2 class="display-5">You found {{ found_object_count }} image cards.</h2>
+        <h2 class="display-5">You found {{ found_object_count }} picture cards.</h2>
         <br>
-        <div>Found Score : {{ objects_score }}</div>
-        <div>Clear Bonus : {{ clear_score }}</div>
-        <div>Time Bonus : {{ time_score }}</div>
-        <div>Stage Score : {{ stage_score }}</div>
-        <div>Total Score : {{ total_score }}</div>
+        <div class="row">
+          <div class="col ml-6">
+            <div>Found Score : {{ objects_score }}</div>
+            <div>Clear Bonus : {{ clear_score }}</div>
+            <div>Time Bonus : {{ time_score }}</div>
+            <br>
+            <div><h5>Stage Total Score : {{ stage_score }}</h5></div>
+          </div>
+          <div class="col text-center">
+            <h4>Total Score</h4>
+            <h1 class="display-4">{{ total_score }}</h1>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="onStageEnd()">O K</button>
@@ -159,12 +159,21 @@
       <div class="modal-body">
         <h2 class="display-5">You found {{ found_object_count }} image cards.</h2>
         <br>
-        <div>Found Score : {{ objects_score }}</div>
-        <div>Stage Score : {{ stage_score }}</div>
-        <div>Total Score : {{ total_score }}</div>
+        <div class="row">
+          <div class="col ml-6">
+            <div>Found Score : {{ objects_score }}</div>
+            <div>Clear Bonus : {{ clear_score }}</div>
+            <br>
+            <div><h5>Stage Score : {{ stage_score }}</h5></div>
+          </div>
+          <div class="col text-center">
+            <h4>Total Score</h4>
+            <h1 class="display-4">{{ total_score }}</h1>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="onStageEnd()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="gameEnd()">Close</button>
       </div>
     </div>
   </div>
