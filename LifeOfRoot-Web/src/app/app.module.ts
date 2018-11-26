@@ -26,6 +26,7 @@ import { DebugComponent } from './debug/debug.component';
 import { PlaydemoComponent } from './playdemo/playdemo.component';
 import { StageService } from './_services/stage.service';
 import { StageobjectService } from './_services/stageobject.service';
+import { TrailerComponent } from './trailer/trailer.component';
 
 @NgModule({
    declarations: [
@@ -40,7 +41,8 @@ import { StageobjectService } from './_services/stageobject.service';
       GameStageComponent,
       GameResultComponent,
       DebugComponent,
-      PlaydemoComponent
+      PlaydemoComponent,
+      TrailerComponent
    ],
    imports: [
       BrowserModule,
