@@ -26,11 +26,7 @@ export class GameResultComponent implements OnInit {
 
   public getGameResult() {
 
-    this.alertify.message('Now working on it...');
-
     this.gameResultService.getGameResult(this.game_id).subscribe((gameResult: GameResult) => {
-
-      this.alertify.success('Successfully uploaded!');
       this.game_result = gameResult;
     }, error => {
       this.alertify.error(error);
