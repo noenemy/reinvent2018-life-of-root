@@ -15,19 +15,20 @@
           <div>
             <h2 class="display-5">{{ game_result.name }},</h2>
             <br>
-            <h2 class="display-5">You found {{ game_result.total_objects_count }} image cards in {{ game_result.total_playtime | number }} seconds.</h2>
+            <h2 class="display-5">Thank you for your participation.</h2>
+            <br>
+            <h2 class="display-5">You found {{ game_result.total_found_objects }} image cards in {{ game_result.total_playtime | number }} seconds.</h2>
           </div>
         </div>
-          
-        <br><br>
+        <br>
 
         <div class="container result-box">
           <div class="row">
-            <div class="col-4 text-center mt-4 mb-4">
+            <div class="col-3 text-center mt-4 mb-4">
               <h4>Total Score</h4>
               <h1 class="display-1">{{ game_result.total_score }}</h1>
             </div>
-            <div class="col-4 text-center mt-4 mb-4">
+            <div class="col-5 text-right mt-4 mb-4">
               <h4>Ranking</h4>
               <h1 class="display-1">{{ game_ranking }}</h1>
             </div>
@@ -41,11 +42,24 @@
             <button type="button" class="btn btn-primary btn-lg" (click)="gameStart()">
               <fa name="play-circle"></fa> Start a New Game</button>
           </div> 
-  
         </div>
-
       </div>
 
     </div>
 
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  
+  <div class="text-right mr-5">
+      <h4>If you enjoyed the demo, please press <span class="badge badge-secondary">LIKE</span> button on your right.</h4>
   </div>

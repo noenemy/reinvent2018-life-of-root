@@ -49,7 +49,7 @@ export class PlaydemoComponent implements OnInit {
           console.log('You pressed Enter key.');
           document.getElementById('buttonSnapshot').click();
       }
-    }
+    });
   }
 
   public triggerSnapshot(): void {

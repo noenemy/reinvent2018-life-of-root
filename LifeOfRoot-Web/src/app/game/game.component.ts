@@ -28,7 +28,7 @@ export class GameComponent implements OnInit {
   onStageCompleted(stage_id: number) {
     let isGameCompleted = false;
 
-    if (stage_id >= 2)
+    if (stage_id == 0 || stage_id >= 2)
       isGameCompleted = true;
 
     if (isGameCompleted) {

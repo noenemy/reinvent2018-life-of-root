@@ -99,7 +99,7 @@ export class GameStageComponent implements OnInit {
     this.displayStageClearModal = 'none';
     this.displayStageFailedModal = 'none';
 
-    if (this.stage_completed == "Y" && this.stage_id < 3)
+    if (this.stage_completed == "Y" && this.stage_id < 2)
     {
       this.stage_id++;
       this.displayObjectList = false;
