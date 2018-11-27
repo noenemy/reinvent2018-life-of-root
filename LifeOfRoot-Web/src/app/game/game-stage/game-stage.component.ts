@@ -18,8 +18,6 @@ export class GameStageComponent implements OnInit {
   @Input() stage: string;
   @Input() game_id: number;
   @Input() stage_id: number;
-  @Input() message1: string;
-  @Input() message2: string;
   @Output() stageCompleted = new EventEmitter<number>();
 
   // stage info

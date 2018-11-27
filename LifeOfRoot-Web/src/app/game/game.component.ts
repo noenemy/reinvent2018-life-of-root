@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameComponent implements OnInit {
   stage: string;
-  game_id: number;
-  message1: string;
-  message2: string;  
+  game_id: number; 
   constructor() { }
 
   ngOnInit() {
@@ -22,9 +20,7 @@ export class GameComponent implements OnInit {
   }
 
   onGameCreated(game_id: number) {
-    this.game_id = game_id;
-    this.message1 = 'We will start the audition right away. Lights, Camera..';
-    this.message2 = 'Let\'s begin with your profile picture.';   
+    this.game_id = game_id; 
     this.goStage('stage');
 
   }
@@ -32,26 +28,8 @@ export class GameComponent implements OnInit {
   onStageCompleted(stage_id: number) {
     let isGameCompleted = false;
 
-    switch (stage_id) {
-      case 1:
-        this.message1 = 'Out of all the feelings we get, my famous one would be happy face.';
-        this.message2 = 'Let me see your happy face!';
-        break;
-      case 2:
-        this.message1 = 'You have already notice this audition is for The Revengers.';
-        this.message2 = 'Revenge comes from the anger. Show us the angry face!';
-        break;
-      case 3:
-        this.message1 = 'When half of the population was gone, we all felt sad.';
-        this.message2 = 'It is time to get your memories back. Show us the sad face.';
-
-        isGameCompleted = true;
-        break;
-        
-      case 0:
-        isGameCompleted = true;
-        break;
-    }
+    if (stage_id >= 2)
+      isGameCompleted = true;
 
     if (isGameCompleted) {
       this.goStage('result');

@@ -50,7 +50,7 @@ namespace GotTalent_API.Controllers
             switch (stageId)
             {
                 case 1:
-                    stageInfo.stage_time = 60;
+                    stageInfo.stage_time = 45;
                     stageInfo.stage_difficulty = "Easy";
                     difficulty = 1;
                     objectCount = 3;
@@ -60,16 +60,16 @@ namespace GotTalent_API.Controllers
                     stageInfo.stage_time = 80;
                     stageInfo.stage_difficulty = "Medium";
                     difficulty = 2;
-                    objectCount = 5;
+                    objectCount = 7;
                     objectScore = 100;
                     break;
-                case 3:
-                    stageInfo.stage_time = 100;
-                    stageInfo.stage_difficulty = "Hard";
-                    difficulty = 2;
-                    objectCount = 10;
-                    objectScore = 100;
-                    break;
+                // case 3:
+                //     stageInfo.stage_time = 100;
+                //     stageInfo.stage_difficulty = "Hard";
+                //     difficulty = 2;
+                //     objectCount = 10;
+                //     objectScore = 100;
+                //     break;
                 default:
                     // need exception handling logic for bad stageId
                     break;
