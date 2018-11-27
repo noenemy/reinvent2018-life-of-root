@@ -42,6 +42,14 @@ export class PlaydemoComponent implements OnInit {
       .then((mediaDevices: MediaDeviceInfo[]) => {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       });
+
+    // Use enter key to get the current snapshot
+    document.body.addEventListener('keypress', function(event) {
+      if(event.keyCode === 13) {
+          console.log('You pressed Enter key.');
+          document.getElementById('buttonSnapshot').click();
+      }
+    }
   }
 
   public triggerSnapshot(): void {

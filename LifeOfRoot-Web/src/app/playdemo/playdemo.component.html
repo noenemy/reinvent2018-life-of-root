@@ -7,15 +7,15 @@
     <div class="col-8">
 
       <div class="text-center">
-          <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+          <webcam [height]="520" [width]="650" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
                   [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
                   [videoOptions]="videoOptions"
                   (cameraSwitched)="cameraWasSwitched($event)"
                   (initError)="handleInitError($event)"
           ></webcam>
 
-          <br/>
-          <button class="btn btn-primary mr-2" (click)="triggerSnapshot();">Take A Snapshot</button>
+          <br/><br/>
+          <button id="buttonSnapshot" class="btn btn-primary mr-2" (click)="triggerSnapshot();">Take A Snapshot</button>
           <!-- <button class="btn btn-secondary" (click)="toggleWebcam();">Toggle Webcam</button> -->
           <br/>
 
