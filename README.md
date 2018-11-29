@@ -1,4 +1,8 @@
+# Life of √(Square Root)
+
 ### This is a Builders Fair project for re:Invent 2018
+
+![main image](https://github.com/noenemy/reinvent2018-life-of-root/raw/master/LifeOfRoot-Web/src/assets/images/background/bg-main-01.jpg)
 
 ## 1. Project Overview
 A casual game using AWS Rekognition Label API
